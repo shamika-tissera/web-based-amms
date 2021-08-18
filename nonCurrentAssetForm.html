@@ -195,23 +195,64 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="warrantyStart">Installation Date&nbsp;/&nbsp;Acceptance Date</label><br>
+                        <label for="installationDate">Installation Date&nbsp;/&nbsp;Acceptance Date</label><br>
                         <div class="input-group date">
-                            <input type="date" class="form-control" id="warrantyStart">
+                            <input type="date" class="form-control" id="installationDate">
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="warrantyEnd">Warranty End</label><br>
-                        <div class="input-group date">
-                            <input type="date" class="form-control" id="warrantyEnd">
-                        </div>
+                        <label for="plant">Plant</label><br>
+                        <select class="browser-default custom-select" id="plant">
+                            <option selected="">Minuwangoda</option>
+                        </select>
                     </div>
                 </div>
             </div>
-        </div>
+            <br>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="condition">Condition</label><br>
+                        <select class="browser-default custom-select" id="condition">
+                            <option selected="">Working</option>
+                            <option value="1">To inspect</option>
+                            <option value="2">Brocken</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="criticality">Criticality</label><br>
+                        <select class="browser-default custom-select" id="criticality">
+                            <option selected="None">None</option>
+                            <option value="low">Low</option>
+                            <option value="Low">Moderate</option>
+                            <option value="High">High</option>
+                            <option value="Extreme">Extreme</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="serviceInterval">Service Interval</label><br>
+                        <input type="text" class="form-control" id="serviceInterval" placeholder="***validation" name="serviceInterval">
+                    </div>
+                </div>                
+            </div>
+            <br>
+            <div class="row">
+                <div class="d-flex col-5 justify-content-center">
+                    <button style="width: 100%;" type="submit" class="btn btn-primary">Submit</button>
+                </div>                
+            </div>
     </form>
+    <br>
+    <br>
+    <br>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
