@@ -3,7 +3,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Table - Brand</title>
+      <title>Inventory</title>
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -22,46 +22,41 @@
             <?php include 'headerNav.php' ?>
             <?php
                include 'includes/dbh-inc.php';
-               function calculateCarryingValue($method, float $rate, float $yearDiff, float $costOfPurchase){
-                  $carryingVal = 0;
-                  switch ($method) {
-                     case 'straight-line':
-                        $perYearDepre = ($rate / 100) * $costOfPurchase;
-                        $carryingVal = $yearDiff * $perYearDepre;
-                        if($carryingVal > $costOfPurchase){
-                           $carryingVal = 'EOL';
-                        }
-                        break;
+            //    function calculateCarryingValue($method, float $rate, float $yearDiff, float $costOfPurchase){
+            //       $carryingVal = 0;
+            //       switch ($method) {
+            //          case 'straight-line':
+            //             $perYearDepre = ($rate / 100) * $costOfPurchase;
+            //             $carryingVal = $yearDiff * $perYearDepre;
+            //             if($carryingVal > $costOfPurchase){
+            //                $carryingVal = 'EOL';
+            //             }
+            //             break;
                      
-                     case 'reducing-balance':
-                        $carryingVal = $costOfPurchase;
-                        for ($i=0; $i < $yearDiff; $i++) { 
-                           $carryingVal = $carryingVal - (($rate/100) * $carryingVal);
-                        }
-                        break;
-                  }
-                  return $carryingVal;
-               }
+            //          case 'reducing-balance':
+            //             $carryingVal = $costOfPurchase;
+            //             for ($i=0; $i < $yearDiff; $i++) { 
+            //                $carryingVal = $carryingVal - (($rate/100) * $carryingVal);
+            //             }
+            //             break;
+            //       }
+            //       return $carryingVal;
+            //    }
                $i = 0;
                
-               $get_pro = "SELECT asset_id, assetType, lifetime, costOfPurchase, depreciationMethod, depreciationRate, date_format(now() , '%Y') - date_format(purchaseDate , '%Y') as 'yearDiff', manufacturer, serviceInterval FROM NonCurrentAsset where state != 'Disposed'";
+               $get_pro = "SELECT inventoryName, orderedQuantity, responsiblePerson,supplierName, DATE_FORMAT(orderTime, '%d/%m/%Y') AS 'orderDate' FROM inventoryorder INNER JOIN inventoryitem ON inventoryorder.inventoryCode = inventoryitem.inventoryCode INNER JOIN supplier ON inventoryorder.supplierID = supplier.supplierID";
                
                $run_pro = mysqli_query($Con,$get_pro);
                echo "<script>";
                echo "var records = [";
                while($row_pro = mysqli_fetch_array($run_pro)) {
-                  $asset_id = $row_pro['asset_id'];
-                  $asset_type = $row_pro['assetType'];
-                  $lifetime = $row_pro['lifetime'];
-                  $service_interval = $row_pro['serviceInterval'];
-                  $depreciationMethod = $row_pro['depreciationMethod'];
-                  $depreciationRate = $row_pro['depreciationRate'];
-                  $yearDiff = $row_pro['yearDiff'];
-                  $costOfPurchase = $row_pro['costOfPurchase'];
-                  $manu = $row_pro['manufacturer'];
-                  $carryingValue = calculateCarryingValue($depreciationMethod, floatval($depreciationRate), floatval($yearDiff), floatval($costOfPurchase));
+                  $inventoryCode = $row_pro['inventoryCode'];
+                  $inventoryName = $row_pro['inventoryName'];
+                  $inventoryType = $row_pro['inventoryType'];
+                  $threshold = $row_pro['threshold'];
+                  $currentQuantity = $row_pro['currentQuantity'];                           
                   
-                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'life_time': '$lifetime', 'manu': '$manu', 'service_interval': '$service_interval', 'carrying_value': '$carryingValue'},";
+                  echo "{'inventoryCode': '$inventoryCode', 'inventoryName': '$inventoryName', 'inventoryType': '$inventoryType', 'threshold': '$threshold', 'currentQuantity': '$currentQuantity'},";
                   
                }
                echo "];";                  
@@ -69,10 +64,10 @@
                                  
             ?>
                <div class="container-fluid">
-                  <h3 class="text-dark mb-4">Assets</h3>
+                  <h3 class="text-dark mb-4">Inventory</h3>
                   <div class="card shadow">
                      <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Employee Info</p>
+                        <p class="text-primary m-0 fw-bold">Inventory Items</p>
                      </div>
                      <div class="card-body">
                         <div class="row">
@@ -98,13 +93,12 @@
                            <table class="table my-0" id="dataTable">
                               <thead>
                                  <tr>
-                                    <th>Asset ID</th>
-                                    <th>Asset Type</th>
-                                    <th>Life-time</th>
-                                    <th>Manufacturer</th>
-                                    <th>Service Interval</th>
-                                    <th>Carrying Value</th>
-                                    <th>Dispose</th>
+                                    <th>Inventory Code</th>
+                                    <th>Inventory Name</th>
+                                    <th>Inventory Type</th>
+                                    <th>Threshold</th>
+                                    <th>Current Quantity</th>  
+                                    <th>Place Order</th>                                  
                                  </tr>
                               </thead>                
                               
@@ -113,13 +107,12 @@
                               </tbody>
                               <tfoot>
                                  <tr>
-                                    <td><strong>Asset ID</strong></td>
-                                    <td><strong>Asset Type</strong></td>
-                                    <td><strong>Life-time</strong></td>
-                                    <td><strong>Manufacturer</strong></td>
-                                    <td><strong>Service Interval</strong></td>
-                                    <td><strong>Carrying Value</strong></td>
-                                    <td><strong>Dispose</strong></td>
+                                    <td><strong>Inventory Code</strong></td>
+                                    <td><strong>Inventory Name</strong></td>
+                                    <td><strong>Inventory Type</strong></td>
+                                    <td><strong>Threshold</strong></td>
+                                    <td><strong>Current Quantity</strong></td>
+                                    <td><strong>Place Order</strong></td>
                                  </tr>
                               </tfoot>
                            </table>
@@ -160,14 +153,11 @@
         var filteredInfo = [];
         for (let i = 0; i < records.length; i++) {
             value = value.toLowerCase();
-            var assetId = records[i].asset_id.toLowerCase();
-            var assetType = records[i].asset_type.toLowerCase();
-            var lifeTime = records[i].life_time;
-            var manu = records[i].manu.toLowerCase();
-            var serviceInterval = records[i].service_interval;
-            var lifeTime = records[i].carrying_value;
+            var inventoryCode = records[i].inventoryCode.toLowerCase();
+            var inventoryName = records[i].inventoryName.toLowerCase();
+            var inventoryType = records[i].inventoryType.toLowerCase();            
 
-            if(assetId.includes(value) || assetType.includes(value) || manu.includes(value)){
+            if(inventoryCode.includes(value) || inventoryName.includes(value) || inventoryType.includes(value)){
             filteredInfo.push(records[i]);
             }
             
@@ -180,13 +170,12 @@
         tableBody.innerHTML = '';
         for (let i = 0; i < records.length; i++) {
             var row = `<tr>
-                        <td> ${records[i].asset_id} </td>
-                        <td> ${records[i].asset_type} </td>
-                        <td> ${records[i].life_time} </td>
-                        <td> ${records[i].manu} </td>
-                        <td> ${records[i].service_interval} </td>
-                        <td> ${records[i].carrying_value} </td>
-                        <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#disposalModal" data-code="${records[i].asset_id}">Dispose</a></td>
+                        <td> ${records[i].inventoryCode} </td>
+                        <td> ${records[i].inventoryName} </td>
+                        <td> ${records[i].inventoryType} </td>
+                        <td> ${records[i].threshold} </td>
+                        <td> ${records[i].currentQuantity} </td>                        
+                        <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].inventoryCode}" type="button" class="btn btn-default" data-toggle="modal" data-target="#inventoryOrderModal" data-code="${records[i].inventoryCode}">Order</a></td>
                         </tr>`;
             tableBody.innerHTML += row;
         }    
@@ -194,48 +183,74 @@
             </script>
 
             <!-- Modal Start -->
-            <div class="modal fade" id="disposalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="inventoryOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                <div class="modal-content">
                   <div class="modal-header">
-                  <h5 class="modal-title" id="disposalModalHead">Dispose Asset</h5>
+                  <h5 class="modal-title" id="inventoryOrderModalHead">Place Order</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true">&times;</span>
                   </button>
                   </div>                  
 
-                  <!-- disposal asset form start -->
+                  <!-- Order Inventory form start -->
                   <div class="modal-body">
-                     <form action="includes/dispose-inc.php" method="POST">
+                     <form action="includes/orderInventory-inc.php" method="POST">
                         <div class="form-group">
-                           <label for="assetCode" class="col-form-label">Asset Code:</label>
-                           <input type="text" class="form-control" id="assetCode" value="" name="assetCode" readonly="readonly">
+                           <label for="inventoryCode" class="col-form-label">Inventory Code:</label>
+                           <input type="text" class="form-control" id="inventoryCode" value="" name="inventoryCode" readonly="readonly">
                         </div>
                         <div class="form-group">
-                           <label for="disposedDate" class="col-form-label">Disposed Date:</label>
-                           <input data-format="YYYY-MM-DD" type="date" class="form-control" name="disposedDate" id="disposedDate"></input>
+                           <label for="due" class="col-form-label">Due by:</label>
+                           <input data-format="YYYY-MM-DD" type="date" class="form-control" name="due" id="due"></input>
                         </div>
                         <div class="form-group">
-                           <label for="disposedAmount" class="col-form-label">Disposed Amount:</label>
-                           <input type="text" class="form-control" id="disposedAmount" name="disposedAmount">
+                           <label for="quantity" class="col-form-label">Quantity:</label>
+                           <input type="text" class="form-control" id="quantity" name="quantity">
+                        </div>
+                        <div class="form-group">
+                           <label for="plant" class="col-form-label">Plant:</label>
+                           <input type="text" class="form-control" id="plant" name="plant">
+                        </div>
+                        <div class="form-group">
+                           <label for="inCharge" class="col-form-label">In charge:</label>
+                           <input type="text" class="form-control" id="inCharge" name="inCharge">
+                        </div>
+                        <div class="form-group">
+                           <label for="supplier" class="col-form-label">Supplier:</label>
+                           <div>
+                           <select class="browser-default custom-select" id="supplier" name="supplier">
+                           <option selected="">Select supplier...</option>
+                           <?php
+                                include 'includes/dbh-inc.php';
+                                $sql_supplier = "SELECT supplierID, supplierName FROM supplier";
+                                $run_pro = mysqli_query($conn,$sql_supplier);
+                                while($row_pro = mysqli_fetch_array($run_pro)) {
+                                    $supplierID = $row_pro['supplierID'];
+                                    $supplierName = $row_pro['supplierName'];
+                                    echo "<option value=\"$supplierID\">$supplierName</option>";
+                                }
+                           ?>
+                            </select>
+                           </div>
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="submit">Dispose</button>
+                        <button type="submit" class="btn btn-primary" name="submit">Order</button>
                         </div>
                      </form>
                   </div>
-                  <!-- disposal asset form end -->                  
+                  <!-- Order Inventory form end -->                  
                   
                   <script>
-                     $('#disposalModal').on('show.bs.modal', function (event) {
+                     $('#inventoryOrderModal').on('show.bs.modal', function (event) {
                         var button = $(event.relatedTarget) // Button that triggered the modal
                         var recipient = button.data('code') // Extract info from data-* attributes
                         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                         var modal = $(this)
                         modal.find('.modal-title').text('Disposal of Asset: ' + recipient)
-                        modal.find('.modal-body #assetCode').val(recipient)
+                        modal.find('.modal-body #inventoryCode').val(recipient)
                   })
                   </script>
                </div>
