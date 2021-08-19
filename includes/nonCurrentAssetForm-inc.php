@@ -31,16 +31,17 @@ if(isset($_POST["submit"])){
             exit();  
     }
     else{
-        if(!(is_float($price) || is_int($price) || is_float($lifetime) || is_int($lifetime) || is_float($serviceInterval) || is_int($serviceInterval))){
+        if((is_float($price) || is_int($price) || is_float($lifetime) || is_int($lifetime) || is_float($serviceInterval) || is_int($serviceInterval))){
             header("location: ../nonCurrentAssetForm.php?error=invalid_input");
             exit(); 
         }
         else{
             if(empty($warrantyCode) || empty($warrantyStart) || empty($warrantyType)){
                 //Non-warranty item
-                $sql = "INSERT INTO noncurrentasset(asset_id, lifetime, depreciationRate, condition, manufacturer, plant, serialNumber, depreciationMethod, costOfPurchase, serviceInterval, state, assetType, purchaseDate)" . 
-                    "VALUES('$code', '$lifetime', '$depreRate', '$condition', '$manu', '$plant', '$serial', '$depreMethod', '$price', '$serviceInterval', '$state', '$asset_type', '$installationDate');";
-            
+                $sql = "INSERT INTO noncurrentasset(asset_id, lifetime, depreciationRate, currentCondition, manufacturer, plant, serialNumber, depreciationMethod, costOfPurchase, serviceInterval, state, assetType, purchaseDate)" . 
+                    "VALUES('$code', $lifetime, $depreRate, '$condition', '$manu', '$plant', '$serial', '$depreMethod', $price, $serviceInterval, '$state', '$asset_type', '$installationDate');";
+                
+                echo "<script> alert(\"$sql\")</script>";
                 $run_out = mysqli_query($conn, $sql);
 
                 if ($run_out) {
@@ -55,8 +56,27 @@ if(isset($_POST["submit"])){
                 //warranty item
                 $sql_warranty = "INSERT INTO warranty(warrantyCode, invoiceNum, type, startDate, endDate)" . 
                     "VALUES('$warrantyCode', '$invoice', '$warrantyType', '$warrantyStart', '$warrantyEnd');";
-                $sql_asset = "INSERT INTO noncurrentasset(asset_id, lifetime, depreciationRate, condition, manufacturer, plant, serialNumber, depreciationMethod, costOfPurchase, serviceInterval, state, assetType, purchaseDate, warrantyCode)" . 
-                    "VALUES('$code', '$lifetime', '$depreRate', '$condition', '$manu', '$plant', '$serial', '$depreMethod', '$price', '$serviceInterval', '$state', '$asset_type', '$installationDate', '$warrantyCode');";
+                $sql_asset = "INSERT INTO noncurrentasset(asset_id, lifetime, depreciationRate, currentCondition, manufacturer, plant, serialNumber, depreciationMethod, costOfPurchase, serviceInterval, state, assetType, purchaseDate, warrantyCode)" . 
+                    "VALUES('$code', $lifetime, $depreRate, '$condition', '$manu', '$plant', '$serial', '$depreMethod', $price, $serviceInterval, '$state', '$asset_type', '$installationDate', '$warrantyCode');";
+                
+                echo "<script> alert(\"$sql_warranty\")</script>";
+                echo "<script> alert(\"$sql_asset\")</script>";
+                
+                $run_out = mysqli_query($conn, $sql_warranty);
+
+                if ($run_out) {
+                    $run_out = mysqli_query($conn, $sql_asset);
+                    if ($run_out) {
+                        echo "<script> alert('Asset Added Successfully!')</script>";
+                        echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                    }
+                    else{
+                        echo "<script> alert('Asset not recorded!')</script>";
+                    }                    
+                }
+                else{
+                    echo "<script> alert('Asset not recorded!')</script>";
+                }
             }
         }
     }

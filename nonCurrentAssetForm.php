@@ -147,7 +147,7 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="warrantyType">Warranty Type</label><br>
-                        <select class="browser-default custom-select" id="warrantyType">
+                        <select class="browser-default custom-select" id="warrantyType" name="warrantyType">
                             <option selected="Limited">Limited</option>
                             <option value="On-Site">On-Site</option>
                             <option value="Lifetime">Lifetime</option>
