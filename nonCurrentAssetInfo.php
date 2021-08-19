@@ -61,7 +61,7 @@
                   $manu = $row_pro['manufacturer'];
                   $carryingValue = calculateCarryingValue($depreciationMethod, floatval($depreciationRate), floatval($yearDiff), floatval($costOfPurchase));
                   
-                  echo "{'asset_id': '$asset_type', 'asset_type': '$asset_type', 'life_time': '$lifetime', 'manu': '$manu', 'service_interval': '$service_interval', 'carrying_value': '$carryingValue'},";
+                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'life_time': '$lifetime', 'manu': '$manu', 'service_interval': '$service_interval', 'carrying_value': '$carryingValue'},";
                   
                }
                echo "];";                  
@@ -104,6 +104,7 @@
                                     <th>Manufacturer</th>
                                     <th>Service Interval</th>
                                     <th>Carrying Value</th>
+                                    <th>Dispose</th>
                                  </tr>
                               </thead>                
                               
@@ -112,12 +113,13 @@
                               </tbody>
                               <tfoot>
                                  <tr>
-                                    <td><strong>Name</strong></td>
-                                    <td><strong>Position</strong></td>
-                                    <td><strong>Office</strong></td>
-                                    <td><strong>Age</strong></td>
-                                    <td><strong>Start date</strong></td>
-                                    <td><strong>Salary</strong></td>
+                                    <td><strong>Asset ID</strong></td>
+                                    <td><strong>Asset Type</strong></td>
+                                    <td><strong>Life-time</strong></td>
+                                    <td><strong>Manufacturer</strong></td>
+                                    <td><strong>Service Interval</strong></td>
+                                    <td><strong>Carrying Value</strong></td>
+                                    <td><strong>Dispose</strong></td>
                                  </tr>
                               </tfoot>
                            </table>
@@ -184,12 +186,63 @@
                         <td> ${records[i].manu} </td>
                         <td> ${records[i].service_interval} </td>
                         <td> ${records[i].carrying_value} </td>
+                        <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#disposalModal">Dispose</a></td>
                         </tr>`;
             tableBody.innerHTML += row;
         }    
     }
             </script>
-            
+
+            <!-- Modal Start -->
+            <div class="modal fade" id="disposalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="disposalModal">Dispose Asset</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                  <div class="modal-body">
+
+                  <!-- disposal asset form start -->
+                  <form action="includes/dispose-inc.php" method="POST">
+                     <div class="form-group">
+                        <label for="assetCode" class="col-form-label">Asset Code:</label>
+                        <input type="text" class="form-control" id="assetCode" value="assetCode" name="assetCode" disabled>
+                     </div>
+                     <div class="form-group">
+                        <label for="disposedDate" class="col-form-label">Disposed Date:</label>
+                        <input type="text" class="form-control" id="disposedDate" name="disposedDate">
+                     </div>
+                     <div class="form-group">
+                        <label for="disposedAmount" class="col-form-label">Disposed Amount:</label>
+                        <input type="text" class="form-control" id="disposedAmount" name="disposedAmount">
+                     </div>
+                  </form>
+                  <!-- disposal asset form end -->
+
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" name="dispose">Dispose</button>
+                  </div>
+                  <script>
+                     $('#exampleModal').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget) // Button that triggered the modal
+                        var recipient = button.data('whatever') // Extract info from data-* attributes
+                        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                        var modal = $(this)
+                        modal.find('.modal-title').text('New message to ' + recipient)
+                        modal.find('.modal-body input').val(recipient)
+                  })
+                  </script>
+               </div>
+            </div>
+         </div>
+         <!-- Modal End -->
+
          </div>
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>

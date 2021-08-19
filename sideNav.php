@@ -20,8 +20,8 @@
                 <a class="nav-link" data-toggle="collapse" href="#nonCurrentAssets" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span>Non-Current Assets</span></a>
                 <div class="collapse" id="nonCurrentAssets">
                     <ul class="navbar-nav text-light" id="nonCurrentAssets">
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plus"></i> Add Item</a></li>
-                        <li class="nav-item"><a class="nav-link" href="nonCurrentAssetInfo.php"><i class="fas fa-eye"></i> View Item</a></li>
+                        <li class="nav-item"><a class="nav-link" href="addNonCurrentAsset.php"><i class="fas fa-plus"></i> Add</a></li>
+                        <li class="nav-item"><a class="nav-link" href="nonCurrentAssetInfo.php"><i class="fas fa-eye"></i> View/Dispose</a></li>
                         <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-minus"></i> Dispose Item</a></li>                    
                     </ul>
                 </div>
