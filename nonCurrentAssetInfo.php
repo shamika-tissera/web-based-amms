@@ -23,11 +23,13 @@
             <?php
                include 'includes/dbh-inc.php';
                function calculateCarryingValue($method, float $rate, float $yearDiff, float $costOfPurchase){
+                  //echo "<script>alert(\"$method $rate $yearDiff \")</script>";
                   $carryingVal = 0;
                   switch ($method) {
                      case 'straight-line':
                         $perYearDepre = ($rate / 100) * $costOfPurchase;
-                        $carryingVal = $yearDiff * $perYearDepre;
+                        $depreciation = $yearDiff * $perYearDepre;
+                        $carryingVal = $costOfPurchase - $depreciation;
                         if($carryingVal > $costOfPurchase){
                            $carryingVal = 'EOL';
                         }
@@ -44,7 +46,7 @@
                }
                $i = 0;
                
-               $get_pro = "SELECT asset_id, assetType, lifetime, costOfPurchase, depreciationMethod, depreciationRate, date_format(now() , '%Y') - date_format(purchaseDate , '%Y') as 'yearDiff', manufacturer, serviceInterval FROM NonCurrentAsset where state != 'Disposed'";
+               $get_pro = "SELECT asset_id, assetType, lifetime, costOfPurchase, depreciationMethod, depreciationRate, date_format(now() , '%Y') - date_format(purchaseDate , '%Y') as 'yearDiff', manufacturer, serviceInterval FROM NonCurrentAsset where disposed = 0";
                
                $run_pro = mysqli_query($Con,$get_pro);
                echo "<script>";

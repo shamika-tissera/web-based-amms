@@ -3,13 +3,14 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Inventory</title>
+      <title>Disposal</title>
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
    </head>
    <body id="page-top">
       <div id="wrapper">
@@ -22,54 +23,99 @@
             <?php include 'headerNav.php' ?>
             <?php
                include 'includes/dbh-inc.php';
-            //    function calculateCarryingValue($method, float $rate, float $yearDiff, float $costOfPurchase){
-            //       $carryingVal = 0;
-            //       switch ($method) {
-            //          case 'straight-line':
-            //             $perYearDepre = ($rate / 100) * $costOfPurchase;
-            //             $carryingVal = $yearDiff * $perYearDepre;
-            //             if($carryingVal > $costOfPurchase){
-            //                $carryingVal = 'EOL';
-            //             }
-            //             break;
+               function calculateCarryingValue($method, float $rate, float $yearDiff, float $costOfPurchase){
+                  //echo "<script>alert(\"$method $rate $yearDiff \")</script>";
+                  $carryingVal = 0;
+                  switch ($method) {
+                     case 'straight-line':
+                        $perYearDepre = ($rate / 100) * $costOfPurchase;
+                        $depreciation = $yearDiff * $perYearDepre;
+                        $carryingVal = $costOfPurchase - $depreciation;
+                        if($carryingVal > $costOfPurchase){
+                           $carryingVal = 'EOL';
+                        }
+                        break;
                      
-            //          case 'reducing-balance':
-            //             $carryingVal = $costOfPurchase;
-            //             for ($i=0; $i < $yearDiff; $i++) { 
-            //                $carryingVal = $carryingVal - (($rate/100) * $carryingVal);
-            //             }
-            //             break;
-            //       }
-            //       return $carryingVal;
-            //    }
+                     case 'reducing-balance':
+                        $carryingVal = $costOfPurchase;
+                        for ($i=0; $i < $yearDiff; $i++) { 
+                           $carryingVal = $carryingVal - (($rate/100) * $carryingVal);
+                        }
+                        break;
+                  }
+                  return $carryingVal;
+               }
                $i = 0;
                
-               $get_pro = "SELECT orderTime, inventoryName, orderedQuantity, responsiblePerson,supplierName, DATE_FORMAT(orderTime, '%d/%m/%Y') AS 'orderDate', DATE_FORMAT(dueDate, '%d/%m/%Y') AS 'dueDate' FROM inventoryorder INNER JOIN inventoryitem ON inventoryorder.inventoryCode = inventoryitem.inventoryCode INNER JOIN supplier ON inventoryorder.supplierID = supplier.supplierID WHERE received = 0;";
+               $get_pro = "SELECT noncurrentasset.asset_id, assetType, lifetime, costOfPurchase, depreciationMethod, depreciationRate, date_format(now() , '%Y') - date_format(purchaseDate , '%Y') as 'yearDiff', TIMESTAMPDIFF(MONTH, purchaseDate, disposedDate) as utilizationMonths, manufacturer FROM NonCurrentAsset INNER JOIN disposal ON noncurrentasset.asset_id = disposal.asset_id WHERE disposed = 1;";
                
                $run_pro = mysqli_query($Con,$get_pro);
                echo "<script>";
                echo "var records = [";
                while($row_pro = mysqli_fetch_array($run_pro)) {
-                  $orderTime = $row_pro['orderTime'];                  
-                  $inventoryName = $row_pro['inventoryName'];
-                  $orderedQuantity = $row_pro['orderedQuantity'];
-                  $responsiblePerson = $row_pro['responsiblePerson'];
-                  $supplierName = $row_pro['supplierName'];
-                  $orderDate = $row_pro['orderDate'];     
-                  $dueDate = $row_pro['dueDate'];                           
+                  $asset_id = $row_pro['asset_id'];
+                  $asset_type = $row_pro['assetType'];
+                  $lifetime = $row_pro['lifetime'];
+                  //$service_interval = $row_pro['serviceInterval'];
+                  $depreciationMethod = $row_pro['depreciationMethod'];
+                  $depreciationRate = $row_pro['depreciationRate'];
+                  $yearDiff = $row_pro['yearDiff'];
+                  $costOfPurchase = $row_pro['costOfPurchase'];
+                  $manu = $row_pro['manufacturer'];
+                  $utilizationMonths = $row_pro['utilizationMonths'];
+                  $carryingValue = calculateCarryingValue($depreciationMethod, floatval($depreciationRate), floatval($yearDiff), floatval($costOfPurchase));
                   
-                  echo "{'dueDate': '$dueDate', 'orderTime': '$orderTime', 'inventoryName': '$inventoryName', 'orderedQuantity': '$orderedQuantity', 'responsiblePerson': '$responsiblePerson', 'supplierName': '$supplierName', 'orderDate': '$orderDate'},";
+                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'life_time': '$lifetime', 'manu': '$manu', 'carrying_value': '$carryingValue', 'utilizationMonths': '$utilizationMonths', 'cost': '$costOfPurchase'},";
                   
                }
                echo "];";                  
                echo "</script>";                                
                                  
             ?>
+            <div class="container-fluid">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 fw-bold">Disposed Assets</p>
+                    </div>
+                    <div class="card-body" style="margin-left: auto; margin-right: auto;">
+                    <canvas style=" height: 300px;" id="myChart" style="width:100%;max-width:1000px"></canvas>
+                        <script>
+                            var xValues = [];
+                            var yValues = [];
+                            for (let i = 0; i < records.length; i++) {
+                                xValues[i] = records[i].asset_id;
+                                yValues[i] = records[i].utilizationMonths;
+                            }
+
+                            var barColors = ["red", "green","blue","orange","brown"];
+
+                            new Chart("myChart", {
+                            type: "bar",
+                            data: {
+                                labels: xValues,
+                                datasets: [{
+                                backgroundColor: barColors,
+                                data: yValues
+                                }]
+                            },
+                            options: {
+                                legend: {display: false},
+                                title: {
+                                display: true,
+                                text: "Utilization by Asset Code"
+                                }
+                            }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <br>
                <div class="container-fluid">
-                  <h3 class="text-dark mb-4">Inventory</h3>
+                  <h3 class="text-dark mb-4">Disposal</h3>
                   <div class="card shadow">
                      <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Inventory Items</p>
+                        <p class="text-primary m-0 fw-bold">Disposed Assets</p>
                      </div>
                      <div class="card-body">
                         <div class="row">
@@ -95,13 +141,13 @@
                            <table class="table my-0" id="dataTable">
                               <thead>
                                  <tr>
-                                    <th>Inventory Name</th>
-                                    <th>Ordered Quantity</th>
-                                    <th>Responsible Person</th>
-                                    <th>Supplier Name</th>
-                                    <th>Order Date</th>  
-                                    <th>Due Date</th>  
-                                    <th>Received</th>                                  
+                                    <th>Asset ID</th>
+                                    <th>Asset Type</th>
+                                    <th>Life-time</th>
+                                    <th>Manufacturer</th>
+                                    <th>Cost of Purchase</th>
+                                    <th>Disposal Value</th>
+                                    <th>Utilization (Months)</th>
                                  </tr>
                               </thead>                
                               
@@ -110,13 +156,13 @@
                               </tbody>
                               <tfoot>
                                  <tr>
-                                    <td><strong>Inventory Name</strong></td>
-                                    <td><strong>Ordered Quantity</strong></td>
-                                    <td><strong>Responsible Person</strong></td>
-                                    <td><strong>Supplier Name</strong></td>
-                                    <td><strong>Order Date</strong></td>
-                                    <td><strong>Due Date</strong></td>
-                                    <td><strong>Received</strong></td>
+                                    <td><strong>Asset ID</strong></td>
+                                    <td><strong>Asset Type</strong></td>
+                                    <td><strong>Life-time</strong></td>
+                                    <td><strong>Manufacturer</strong></td>
+                                    <td><strong>Cost of Purchase</strong></td>
+                                    <td><strong>Disposal Value</strong></td>
+                                    <td><strong>Utilization (Months)</strong></td>
                                  </tr>
                               </tfoot>
                            </table>
@@ -157,13 +203,15 @@
         var filteredInfo = [];
         for (let i = 0; i < records.length; i++) {
             value = value.toLowerCase();
-            var responsiblePerson = records[i].responsiblePerson.toLowerCase();
-            var inventoryName = records[i].inventoryName.toLowerCase();
-            var inventoryType = records[i].inventoryType.toLowerCase();
-            var supplierName = records[i].supplierName.toLowerCase();            
+            var assetId = records[i].asset_id.toLowerCase();
+            var assetType = records[i].asset_type.toLowerCase();
+            var lifeTime = records[i].life_time;
+            var manu = records[i].manu.toLowerCase();
+            var serviceInterval = records[i].service_interval;
+            var lifeTime = records[i].carrying_value;
 
-            if(responsiblePerson.includes(value) || supplierName.includes(value) || inventoryName.includes(value) || inventoryType.includes(value)){
-               filteredInfo.push(records[i]);
+            if(assetId.includes(value) || assetType.includes(value) || manu.includes(value)){
+            filteredInfo.push(records[i]);
             }
             
         }
@@ -175,13 +223,13 @@
         tableBody.innerHTML = '';
         for (let i = 0; i < records.length; i++) {
             var row = `<tr>
-                        <td> ${records[i].inventoryName} </td>
-                        <td> ${records[i].orderedQuantity} </td>
-                        <td> ${records[i].responsiblePerson} </td>
-                        <td> ${records[i].supplierName} </td>
-                        <td> ${records[i].orderDate} </td>  
-                        <td> ${records[i].dueDate} </td>                        
-                        <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].orderTime}" type="button" class="btn btn-default" data-toggle="modal" data-target="#inventoryReception" data-code="${records[i].inventoryName}" data-due="${records[i].dueDate}" data-quantity="${records[i].orderedQuantity}" data-person="${records[i].responsiblePerson}" data-supplier="${records[i].supplierName}">Received</a></td>
+                        <td> ${records[i].asset_id} </td>
+                        <td> ${records[i].asset_type} </td>
+                        <td> ${records[i].life_time} </td>
+                        <td> ${records[i].manu} </td>
+                        <td> ${records[i].cost} </td>
+                        <td> ${records[i].carrying_value} </td>
+                        <td> ${records[i].utilizationMonths} </td>                        
                         </tr>`;
             tableBody.innerHTML += row;
         }    
@@ -189,73 +237,48 @@
             </script>
 
             <!-- Modal Start -->
-            <div class="modal fade" id="inventoryReception" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="disposalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                <div class="modal-content">
                   <div class="modal-header">
-                  <h5 class="modal-title" id="inventoryReceptionHead">Place Order</h5>
+                  <h5 class="modal-title" id="disposalModalHead">Dispose Asset</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true">&times;</span>
                   </button>
                   </div>                  
 
-                  <!-- Order Inventory form start -->
+                  <!-- disposal asset form start -->
                   <div class="modal-body">
-                     <form action="includes/receivedInventory-inc.php" method="POST">
+                     <form action="includes/dispose-inc.php" method="POST">
                         <div class="form-group">
-                           <label for="inventoryCode" class="col-form-label">Inventory Item:</label>
-                           <input type="text" class="form-control" id="inventoryCode" value="" name="inventoryCode" readonly="readonly">
+                           <label for="assetCode" class="col-form-label">Asset Code:</label>
+                           <input type="text" class="form-control" id="assetCode" value="" name="assetCode" readonly="readonly">
                         </div>
                         <div class="form-group">
-                           <label for="supplier" class="col-form-label">Supplier:</label>
-                           <input type="text" class="form-control" id="supplier" value="" name="supplier" readonly="readonly">
+                           <label for="disposedDate" class="col-form-label">Disposed Date:</label>
+                           <input data-format="YYYY-MM-DD" type="date" class="form-control" name="disposedDate" id="disposedDate"></input>
                         </div>
                         <div class="form-group">
-                           <label for="due" class="col-form-label">Due by:</label>
-                           <input type="text" class="form-control" name="due" id="due" readonly="readonly"></input>
-                        </div>
-                        <div class="form-group">
-                           <label for="quantity" class="col-form-label">Quantity Requested:</label>
-                           <input type="text" class="form-control" id="quantity" name="quantity" readonly="readonly">
-                        </div>                        
-                        <div class="form-group">
-                           <label for="inCharge" class="col-form-label">In charge:</label>
-                           <input type="text" class="form-control" id="inCharge" name="inCharge" readonly="readonly">
-                        </div>
-                        <div class="form-group">
-                           <label for="receivedDate" class="col-form-label">Received On:</label>
-                           <input data-format="YYYY-MM-DD" type="date" class="form-control" name="receivedDate" id="receivedDate"></input>
-                        </div>
-                        <div class="form-group">
-                           <label for="receivedQuantity" class="col-form-label">Quantity Received:</label>
-                           <input type="text" class="form-control" id="receivedQuantity" name="receivedQuantity">
+                           <label for="disposedAmount" class="col-form-label">Disposed Amount:</label>
+                           <input type="text" class="form-control" id="disposedAmount" name="disposedAmount">
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="submit">Received</button>
+                        <button type="submit" class="btn btn-primary" name="submit">Dispose</button>
                         </div>
                      </form>
                   </div>
-                  <!-- Order Inventory form end -->                  
+                  <!-- disposal asset form end -->                  
                   
                   <script>
-                     $('#inventoryReception').on('show.bs.modal', function (event) {
+                     $('#disposalModal').on('show.bs.modal', function (event) {
                         var button = $(event.relatedTarget) // Button that triggered the modal
                         var recipient = button.data('code') // Extract info from data-* attributes
-                        var due = button.data('due');
-                        var quantity = button.data('quantity');
-                        var person = button.data('person');
-                        var supplier = button.data('supplier');
                         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                         var modal = $(this)
-                        modal.find('.modal-title').text('Received items for: ' + recipient)
-                        modal.find('.modal-body #inventoryCode').val(recipient)
-                        modal.find('.modal-body #inCharge').val(person);
-                        modal.find('.modal-body #due').val(due);
-                        modal.find('.modal-body #receivedQuantity').val(quantity);
-                        modal.find('.modal-body #quantity').val(quantity);
-                        modal.find('.modal-body #supplier').val(supplier);
+                        modal.find('.modal-title').text('Disposal of Asset: ' + recipient)
+                        modal.find('.modal-body #assetCode').val(recipient)
                   })
                   </script>
                </div>

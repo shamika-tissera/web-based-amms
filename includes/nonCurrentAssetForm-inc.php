@@ -41,12 +41,20 @@ if(isset($_POST["submit"])){
                 $sql = "INSERT INTO noncurrentasset(asset_id, lifetime, depreciationRate, currentCondition, manufacturer, plant, serialNumber, depreciationMethod, costOfPurchase, serviceInterval, state, assetType, purchaseDate)" . 
                     "VALUES('$code', $lifetime, $depreRate, '$condition', '$manu', '$plant', '$serial', '$depreMethod', $price, $serviceInterval, '$state', '$asset_type', '$installationDate');";
                 
-                echo "<script> alert(\"$sql\")</script>";
                 $run_out = mysqli_query($conn, $sql);
 
                 if ($run_out) {
-                    echo "<script> alert('Asset Added Successfully!')</script>";
-                    echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                    //update service due date
+                    $update_service = "CALL UpdateNextServiceDue('$code');";
+                    $run_out = mysqli_query($conn, $update_service);
+
+                    if($run_out){
+                        echo "<script> alert('Asset Added Successfully!')</script>";
+                        echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                    }
+                    else{
+                        echo "<script> alert('Asset not recorded!')</script>";
+                    }
                 }
                 else{
                     echo "<script> alert('Asset not recorded!')</script>";
@@ -67,8 +75,17 @@ if(isset($_POST["submit"])){
                 if ($run_out) {
                     $run_out = mysqli_query($conn, $sql_asset);
                     if ($run_out) {
-                        echo "<script> alert('Asset Added Successfully!')</script>";
-                        echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                        //update service due date
+                        $update_service = "CALL UpdateNextServiceDue('$code');";
+                        $run_out = mysqli_query($conn, $update_service);
+
+                        if($run_out){
+                            echo "<script> alert('Asset Added Successfully!')</script>";
+                            echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                        }
+                        else{
+                            echo "<script> alert('Asset not recorded!')</script>";
+                        }
                     }
                     else{
                         echo "<script> alert('Asset not recorded!')</script>";
