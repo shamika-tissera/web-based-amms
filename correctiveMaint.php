@@ -24,7 +24,7 @@
                include 'includes/dbh-inc.php';
                $i = 0;
                
-               $get_pro = "SELECT WorkerReports.asset_id as 'Asset Code', NonCurrentAsset.assetType as 'Asset Name', (UserInfo.FirstName + ' ' + UserInfo.LastName) as 'Reporter', WorkerReports.reported_date as 'Reported Date', NonCurrentAsset.plant as 'Plant', WorkerReports.criticality_machineOperations as 'Machine Criticality', WorkerReports.criticality_activityConstraints as 'Operational Bottleneck', WorkerReports.message as 'Description' from WorkerReports inner join NonCurrentAsset on WorkerReports.asset_id = NonCurrentAsset.asset_id inner join UserInfo on UserInfo.Username = WorkerReports.username where managerRespoded = 'true' and (performed = 0 or performed = null);";
+               $get_pro = "SELECT WorkerReports.asset_id as 'Asset Code', NonCurrentAsset.assetType as 'Asset Name', workerreports.username as 'Reporter', WorkerReports.reported_date as 'Reported Date', NonCurrentAsset.plant as 'Plant', WorkerReports.criticality_machineOperations as 'Machine Criticality', WorkerReports.criticality_activityConstraints as 'Operational Bottleneck', WorkerReports.message as 'Description' from WorkerReports inner join NonCurrentAsset on WorkerReports.asset_id = NonCurrentAsset.asset_id inner join UserInfo on UserInfo.Username = WorkerReports.username where managerRespoded = 'true' and (performed = 0 or performed = null);";
                
                $run_pro = mysqli_query($Con,$get_pro);
                echo "<script>";
@@ -163,7 +163,7 @@
                         <td> ${records[i].machineCritical} </td>
                         <td> ${records[i].operationCritical} </td>
                         <td> ${records[i].description} </td>
-                        <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#disposalModal" data-code="${records[i].asset_id}" data-type="${records[i].asset_type}" data-manu="${records[i].manu}" data-due="${records[i].serviceDue}">Performed</a></td>
+                        <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#disposalModal" data-code="${records[i].asset_id}" data-type="${records[i].asset_type}" data-reporter="${records[i].reporter}" data-reportDate="${records[i].reportDate}" data-description="${records[i].description}">Performed</a></td>
                         </tr>`;
             tableBody.innerHTML += row;
         }    
@@ -193,12 +193,16 @@
                            <input type="text" class="form-control" name="assetType" id="assetType" readonly="readonly"></input>
                         </div>
                         <div class="form-group">
-                           <label for="manufacturer" class="col-form-label">Manufacturer:</label>
-                           <input type="text" class="form-control" id="manufacturer" name="manufacturer" readonly="readonly">
+                           <label for="reporter" class="col-form-label">Reporter:</label>
+                           <input type="text" class="form-control" id="reporter" name="reporter" readonly="readonly">
                         </div>
+                        <!-- <div class="form-group">
+                           <label for="reportedDate" class="col-form-label">Reported Date:</label>
+                           <input type="text" class="form-control" id="reportedDate" name="reportedDate" readonly="readonly">
+                        </div> -->
                         <div class="form-group">
-                           <label for="serviceDue" class="col-form-label">Service Due:</label>
-                           <input type="text" class="form-control" id="serviceDue" name="serviceDue" readonly="readonly">
+                           <label for="description" class="col-form-label">Description:</label>
+                           <input type="text" class="form-control" id="description" name="description" readonly="readonly">
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -213,16 +217,18 @@
                         var button = $(event.relatedTarget) // Button that triggered the modal
                         var recipient = button.data('code') // Extract info from data-* attributes
                         var type = button.data('type') // Extract info from data-* attributes
-                        var manu = button.data('manu') // Extract info from data-* attributes
-                        var due = button.data('due') // Extract info from data-* attributes
+                        var reporter = button.data('reporter') // Extract info from data-* attributes
+                        var reportDate = button.data('reportedDate') // Extract info from data-* attributes
+                        var description = button.data('description')
                         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                         var modal = $(this)
                         modal.find('.modal-title').text('Preventive Maintenance on ' + recipient)
                         modal.find('.modal-body #assetCode').val(recipient)
                         modal.find('.modal-body #assetType').val(type)
-                        modal.find('.modal-body #manufacturer').val(manu)
-                        modal.find('.modal-body #serviceDue').val(due)
+                        modal.find('.modal-body #reporter').val(reporter)
+                        //modal.find('.modal-body #reportedDate').val(reportDate)
+                        modal.find('.modal-body #description').val(description)
                   })
                   </script>
                </div>
