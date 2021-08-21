@@ -10,13 +10,13 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
    </head>
-   <body class="bg-gradient-primary">
+   <body class="bg-gradient-default">
       <div class="container">
          <div class="card shadow-lg o-hidden border-0 my-5">
-            <div class="card-body p-0">
+            <div class="card-body">
                <div class="row">
-                  <div class="col-lg-5 d-none d-lg-flex">
-                     <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
+                  <div class="col-lg-2 d-none d-lg-flex">
+                     
                   </div>
                   <div class="col-lg-7">
                      <div class="p-5">

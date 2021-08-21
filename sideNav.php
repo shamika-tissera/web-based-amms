@@ -17,35 +17,35 @@
             
             <!-- Non-Current Assets Drop Down -->
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#nonCurrentAssets" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span>Asset Management</span></a>
+                <a class="nav-link" data-toggle="collapse" href="#nonCurrentAssets" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span> Asset Management</span></a>
                 <div class="collapse" id="nonCurrentAssets">
                     <ul class="navbar-nav text-light" id="nonCurrentAssets">
                         <li class="nav-item"><a class="nav-link" href="addNonCurrentAsset.php"><i class="fas fa-plus"></i> Add</a></li>
                         <li class="nav-item"><a class="nav-link" href="nonCurrentAssetInfo.php"><i class="fas fa-eye"></i> View/Dispose</a></li>
-                        <li class="nav-item"><a class="nav-link" href="assetDisposal.php"><i class="fas fa-plus"></i> Utilization</a></li>                
+                        <li class="nav-item"><a class="nav-link" href="assetDisposal.php"><i class="fas fa-shuttle-van"></i> Utilization</a></li>                
                     </ul>
                 </div>
              </li>
 
              <!-- Inventory Assets Drop Down -->
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span>Inventory Management</span></a>
+                <a class="nav-link" data-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-warehouse"></i><span> Inventory Management</span></a>
                 <div class="collapse" id="inventory">
                     <ul class="navbar-nav text-light" id="nonCurrentAssets">
                         <li class="nav-item"><a class="nav-link" href="#"><i class="far fa-chart-bar"></i> Analytics</a></li>
                         <li class="nav-item"><a class="nav-link" href="manageInventory.php"><i class="fas fa-tasks"></i> Manage</a></li>
-                        <li class="nav-item"><a class="nav-link" href="inventoryOrders.php"><i class="fas fa-tasks"></i> Orders</a></li>                
+                        <li class="nav-item"><a class="nav-link" href="inventoryOrders.php"><i class="fas fa-history"></i> Orders</a></li>                
                     </ul>
                 </div>
              </li>
 
              <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#maintenance" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span>Maintenance Management</span></a>
+                <a class="nav-link" data-toggle="collapse" href="#maintenance" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-brush"></i><span> Maintenance Management</span></a>
                 <div class="collapse" id="maintenance">
                     <ul class="navbar-nav text-light" id="nonCurrentAssets">
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="far fa-chart-bar"></i> Backlog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="manageInventory.php"><i class="fas fa-tasks"></i> Preventive</a></li>
-                        <li class="nav-item"><a class="nav-link" href="inventoryOrders.php"><i class="fas fa-tasks"></i> Corrective</a></li>                
+                        <li class="nav-item"><a class="nav-link" href="backlog.php"><i class="fas fa-hand-point-left"></i> Backlog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="preventiveMaintenance.php"><i class="fas fa-tasks"></i> Preventive</a></li>
+                        <li class="nav-item"><a class="nav-link" href="correctiveMaint.php"><i class="fas fa-tasks"></i> Corrective</a></li>                
                     </ul>
                 </div>
              </li>

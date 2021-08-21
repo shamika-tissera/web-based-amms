@@ -34,8 +34,24 @@
                                     </div>
                                  </div>
                                  <button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
-                                 <hr>
-                                 <a class="btn btn-primary d-block btn-google btn-user w-100 mb-2" role="button"><i class="fab fa-google"></i>&nbsp; Login with Google</a><a class="btn btn-primary d-block btn-facebook btn-user w-100" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Login with Facebook</a>
+                                 <?php
+                                    if(isset($_GET["error"])){
+                                          if($_GET["error"] == "invalid_login"){
+                                             echo '<p style="color:red">We couldn\'t find your username.</p>';
+                                          }
+                                          if($_GET["error"] == "wrong_login"){
+                                             echo '<p style="color:red">Credentials are incorrect.</p>';
+                                          }
+                                          if($_GET["error"] == "emptyinput"){
+                                             echo '<p style="color:red">Please complete all fields</p>';
+                                          }            
+                                    }
+                                    if(isset($_GET["redirect"])){
+                                          if($_GET["redirect"] == "logout"){
+                                             
+                                          }
+                                    }
+                                 ?>
                                  <hr>
                               </form>
                               <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
