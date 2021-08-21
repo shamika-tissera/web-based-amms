@@ -24,19 +24,21 @@
                include 'includes/dbh-inc.php';
                $i = 0;
                
-               $get_pro = "SELECT asset_id, assetType, manufacturer, plant, serviceDue FROM NonCurrentAsset WHERE serviceDue <= DATE_ADD(NOW(), INTERVAL 2 MONTH) AND serviceDue >= DATE_ADD(NOW(), INTERVAL -3 MONTH) AND disposed = 0;";
+               $get_pro = "SELECT WorkerReports.asset_id as 'Asset Code', NonCurrentAsset.assetType as 'Asset Name', (UserInfo.FirstName + ' ' + UserInfo.LastName) as 'Reporter', WorkerReports.reported_date as 'Reported Date', NonCurrentAsset.plant as 'Plant', WorkerReports.criticality_machineOperations as 'Machine Criticality', WorkerReports.criticality_activityConstraints as 'Operational Bottleneck', WorkerReports.message as 'Description' from WorkerReports inner join NonCurrentAsset on WorkerReports.asset_id = NonCurrentAsset.asset_id inner join UserInfo on UserInfo.Username = WorkerReports.username where managerRespoded = 'true' and (performed = 0 or performed = null);";
                
                $run_pro = mysqli_query($Con,$get_pro);
                echo "<script>";
                echo "var records = [";
                while($row_pro = mysqli_fetch_array($run_pro)) {
-                  $asset_id = $row_pro['asset_id'];
-                  $asset_type = $row_pro['assetType'];
-                  $manu = $row_pro['manufacturer'];
-                  $plant = $row_pro['plant'];
-                  $serviceDue = $row_pro['serviceDue'];
+                  $asset_id = $row_pro['Asset Code'];
+                  $asset_type = $row_pro['Asset Name'];
+                  $reporter = $row_pro['Reporter'];
+                  $reportDate = $row_pro['Reported Date'];
+                  $machineCritical = $row_pro['Machine Criticality'];
+                  $operationCritical = $row_pro['Operational Bottleneck'];
+                  $description = $row_pro['Description'];
                   
-                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'manu': '$manu', 'plant': '$plant', 'serviceDue': '$serviceDue'},";
+                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'reporter': '$reporter', 'reportDate': '$reportDate', 'machineCritical': '$machineCritical', 'operationCritical': '$operationCritical', 'description': '$description'},";
                   
                }
                echo "];";                  
@@ -75,9 +77,11 @@
                                  <tr>
                                     <th>Asset ID</th>
                                     <th>Asset Type</th>
-                                    <th>Manufacturer</th>
-                                    <th>Plant</th>
-                                    <th>Service Due</th>
+                                    <th>Reporter</th>
+                                    <th>Reported Date</th>
+                                    <th>Machine Criticality</th>
+                                    <th>Operational Bottleneck</th>
+                                    <th>Description</th>
                                     <th>Performed</th>
                                  </tr>
                               </thead>                
@@ -89,9 +93,11 @@
                                  <tr>
                                     <td><strong>Asset ID</strong></td>
                                     <td><strong>Asset Type</strong></td>
-                                    <td><strong>Manufacturer</strong></td>
-                                    <td><strong>Plant</strong></td>
-                                    <td><strong>Service Due</strong></td>
+                                    <td><strong>Reporter</strong></td>
+                                    <td><strong>Reported Date</strong></td>
+                                    <td><strong>Machine Criticality</strong></td>
+                                    <td><strong>Operational Bottleneck</strong></td>
+                                    <td><strong>Description</strong></td>
                                     <td><strong>Performed</strong></td>
                                  </tr>
                               </tfoot>
@@ -135,10 +141,9 @@
             value = value.toLowerCase();
             var assetId = records[i].asset_id.toLowerCase();
             var assetType = records[i].asset_type.toLowerCase();
-            var manu = records[i].manu.toLowerCase();
-            var plant = records[i].plant.toLowerCase();
+            var reporter = records[i].reporter.toLowerCase();
 
-            if(assetId.includes(value) || assetType.includes(value) || manu.includes(value) || plant.includes(value)){
+            if(assetId.includes(value) || assetType.includes(value) || reporter.includes(value)){
                 filteredInfo.push(records[i]);
             }
             
@@ -153,9 +158,11 @@
             var row = `<tr>
                         <td> ${records[i].asset_id} </td>
                         <td> ${records[i].asset_type} </td>
-                        <td> ${records[i].manu} </td>
-                        <td> ${records[i].plant} </td>
-                        <td> ${records[i].serviceDue} </td>
+                        <td> ${records[i].reporter} </td>
+                        <td> ${records[i].reportDate} </td>
+                        <td> ${records[i].machineCritical} </td>
+                        <td> ${records[i].operationCritical} </td>
+                        <td> ${records[i].description} </td>
                         <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#disposalModal" data-code="${records[i].asset_id}" data-type="${records[i].asset_type}" data-manu="${records[i].manu}" data-due="${records[i].serviceDue}">Performed</a></td>
                         </tr>`;
             tableBody.innerHTML += row;
