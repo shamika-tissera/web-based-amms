@@ -10,7 +10,9 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
    </head>
+   <?php include 'sideNav.php' ?>
    <body class="bg-gradient-default">
+   
       <div class="container">
          <div class="card shadow-lg o-hidden border-0 my-5">
             <div class="card-body">
