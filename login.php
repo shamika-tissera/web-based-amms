@@ -25,25 +25,24 @@
                               <div class="text-center">
                                  <h4 class="text-dark mb-4">Welcome Back!</h4>
                               </div>
-                              <form class="user">
-                                 <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email"></div>
-                                 <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Password" name="password"></div>
+                              <form class="user" action="includes/login-inc.php" method="POST">
+                                 <div class="mb-3"><input class="form-control form-control-user" type="text" id="uname" aria-describedby="emailHelp" placeholder="Enter Username..." name="uname"></div>
+                                 <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Enter Password..." name="pwd"></div>
                                  <div class="mb-3">
                                     <div class="custom-control custom-checkbox small">
                                        <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
                                     </div>
                                  </div>
-                                 <button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+                                 <button class="btn btn-primary d-block btn-user w-100" type="submit" name="submit">Login</button>
                                  <?php
-                                    if(isset($_GET["error"])){
-                                          if($_GET["error"] == "invalid_login"){
-                                             echo '<p style="color:red">We couldn\'t find your username.</p>';
-                                          }
-                                          if($_GET["error"] == "wrong_login"){
-                                             echo '<p style="color:red">Credentials are incorrect.</p>';
+                                    if(isset($_GET["error"])){   
+                                          if($_GET["error"] == "wrong_login" || $_GET["error"] == "invalid_login"){
+                                             echo "<br/>";
+                                             echo '<p style="color:red">*Credentials are incorrect.</p>';
                                           }
                                           if($_GET["error"] == "emptyinput"){
-                                             echo '<p style="color:red">Please complete all fields</p>';
+                                             echo "<br/>";
+                                             echo '<p style="color:red">*Please complete all fields</p>';
                                           }            
                                     }
                                     if(isset($_GET["redirect"])){

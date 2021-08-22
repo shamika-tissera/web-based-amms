@@ -1,3 +1,10 @@
+<?php 
+    session_start();
+    if ((!isset($_SESSION["username"])) || isset($_POST["submit"])) {
+        header("location:login.php");
+    }
+?>
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -88,7 +95,7 @@
                               </div>
                               <br>
                               <div class="row align-items-center no-gutters">
-                                 <div class="text-dark"><span><a href="#" class="link-secondary">More details...</a></span></div> 
+                                 <div class="text-dark"><span><a href="inventoryLow.php" class="link-secondary">More details...</a></span></div> 
                               </div>
                            </div>
                         </div>

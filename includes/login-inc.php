@@ -1,4 +1,5 @@
 <?php
+
 //determines if the user has accessed this page in the proper way (via the submission form)
 if(!isset($_POST["submit"])){
     header("location: ../login.php");
@@ -53,9 +54,9 @@ function loginUser($conn, $uname, $pwd){
     }
     if($checkPwd === true){
         session_start();
-        $_SESSION["username"] = $userExists["username"];
-        $_SESSION["firstname"] = $userExists["firstname"];
-        $_SESSION["lastname"] = $userExists["lastname"];
+        $_SESSION['username'] = $userExists["username"];
+        $_SESSION['firstname'] = $userExists["firstname"];
+        $_SESSION['lastname'] = $userExists["lastname"];
         header('location: ../index.php');
         exit();
     }
