@@ -1,0 +1,11 @@
+.quick-info{
+    border: 1px solid white;
+    margin: 10px;
+    height: 150px;
+    padding: 30px;
+}
+
+.quick-info-details{
+    position: absolute;
+    margin-left: 150px;
+}

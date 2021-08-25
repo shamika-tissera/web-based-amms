@@ -12,8 +12,8 @@
         
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#reports" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span> Reporting</span></a>
-                <div class="collapse" id="nonCurrentAssets">
-                    <ul class="navbar-nav text-light" id="reports">
+                <div class="collapse" id="reports">
+                    <ul class="navbar-nav text-light" id="reportsLinks">
                         <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plus"></i> Make a report</a></li>
                         <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-eye"></i> View previous reports</a></li>                        
                     </ul>
