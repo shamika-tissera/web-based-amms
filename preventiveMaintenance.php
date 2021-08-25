@@ -1,3 +1,4 @@
+<?php include 'includes/verifier-inc.php'; ?>
 <!DOCTYPE html>
 <html>
    <head>

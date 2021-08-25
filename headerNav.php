@@ -1,7 +1,7 @@
 <?php
    if (!isset($_SESSION["username"])) {
-      header("location:login.php");
-      exit();
+      // header("location:login.php");
+      // exit();
    }
    if(isset($_SESSION['firstname'])){
       $fname = $_SESSION['firstname'];
