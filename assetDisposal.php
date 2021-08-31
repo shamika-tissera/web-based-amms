@@ -211,7 +211,7 @@
             var lifeTime = records[i].carrying_value;
 
             if(assetId.includes(value) || assetType.includes(value) || manu.includes(value)){
-            filteredInfo.push(records[i]);
+               filteredInfo.push(records[i]);
             }
             
         }

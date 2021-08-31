@@ -38,7 +38,7 @@ function checkUnameExists($uname, $conn){
     }
     mysqli_stmt_close($stmt);
 }
-function loginUser($conn, $uname, $pwd){
+function loginUser($conn, $uname, $pwd) {
     
     $userExists = checkUnameExists($uname, $conn);
     if($userExists === false){
@@ -48,18 +48,33 @@ function loginUser($conn, $uname, $pwd){
     }
 
     $pwdHashed = $userExists["Password"];
+    $empCategory = $userExists["EmpCategory"];
     $checkPwd = password_verify($pwd, $pwdHashed);
 
-    if($checkPwd === false){
+    if($checkPwd === false) {
         header("location: ../login.php?error=invalid_login");
         exit();
     }
-    if($checkPwd === true){
+    if($checkPwd === true) {
         session_start();
         $_SESSION['username'] = $userExists["Username"];
         $_SESSION['firstname'] = $userExists["FirstName"];
         $_SESSION['lastname'] = $userExists["LastName"];
-        header('location: ../index.php');
+        switch ($empCategory) {
+            case 'manager':
+            case 'Manager':
+                header('location: ../index.php');
+                break;
+            
+            case 'Worker':
+            case 'worker':
+                header('location: ../Worker/index.php');
+                break;
+
+            default:
+                break;
+        }
+        
         exit();
     }
 }

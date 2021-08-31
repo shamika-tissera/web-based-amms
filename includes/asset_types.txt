@@ -1,0 +1,11 @@
+Heater
+Network Device
+Sanitation Device
+Printer/Scanner
+Lift
+Fire Extinguisher
+Computer
+Plumbing Device
+Phone
+Sink
+Lighting
