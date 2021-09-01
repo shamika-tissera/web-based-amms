@@ -63,11 +63,13 @@ function loginUser($conn, $uname, $pwd) {
         switch ($empCategory) {
             case 'manager':
             case 'Manager':
+                $_SESSION['category'] = 'manager';
                 header('location: ../index.php');
                 break;
             
             case 'Worker':
             case 'worker':
+                $_SESSION['category'] = 'worker';
                 header('location: ../Worker/index.php');
                 break;
 

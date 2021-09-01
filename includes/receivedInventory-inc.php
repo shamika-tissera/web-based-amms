@@ -39,7 +39,6 @@ if(isset($_POST["submit"])){
     }
     else{
         $sql_update = "UPDATE inventoryitem SET currentQuantity = currentQuantity + $receivedQuantity WHERE inventoryCode = '$inventoryItem';";
-        echo "<script>alert(\"$sql_update\")</script>";
         $run_update_table = mysqli_query($Con,$sql_update);
         if(!$run_update_table){
             echo "<script>alert(\"Failed to record disposal due to internal error!\")</script>";

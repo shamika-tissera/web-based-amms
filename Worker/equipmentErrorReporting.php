@@ -48,7 +48,7 @@
                               <div class="row justify-content-center">
                                  <div class="form-group">
                                     <label for="assetType">Asset Type<span class="text-danger">*</span></label><br>
-                                    <input type="text" class="form-control" id="assetType" name="assetType" readonly="readonly">
+                                    <input style="cursor:not-allowed;" type="text" class="form-control" id="assetType" name="assetType" readonly="readonly">
                                     <?php
                                           $get_pro = "SELECT asset_id, assetType, plant FROM NonCurrentAsset WHERE disposed = 0";
                
@@ -71,7 +71,7 @@
                               <div class="row justify-content-center">
                                  <div class="form-group">
                                     <label for="plant">Plant<span class="text-danger">*</span></label><br>
-                                    <input type="text" class="form-control" id="plant" name="plant" readonly="readonly">
+                                    <input style="cursor:not-allowed;" type="text" class="form-control" id="plant" name="plant" readonly="readonly">
                                  </div>
                               </div>
                               <div class="row justify-content-center">

@@ -14,13 +14,13 @@
                 <a class="nav-link" data-toggle="collapse" href="#reports" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-table"></i><span> Reporting</span></a>
                 <div class="collapse" id="reports">
                     <ul class="navbar-nav text-light" id="reportsLinks">
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plus"></i> Make a report</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-eye"></i> View previous reports</a></li>                        
+                        <li class="nav-item"><a class="nav-link" href="equipmentErrorReporting.php"><i class="fas fa-plus"></i> Make a report</a></li>
+                        <li class="nav-item"><a class="nav-link" href="viewPreviousReports.php"><i class="fas fa-eye"></i> View previous reports</a></li>                        
                     </ul>
                 </div>
              </li>             
 
-            <li class="nav-item"><a class="nav-link" href="#"><i class="far fa-user-circle"></i><span> Stock usage</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="stockUsage.php"><i class="far fa-user-circle"></i><span> Stock usage</span></a></li>
             
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>

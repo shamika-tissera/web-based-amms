@@ -1,5 +1,5 @@
 <?php
-   include "../includes/verifier-inc.php"
+   include "../includes/verfier_worker-inc.php";
 ?>
 <!DOCTYPE html>
 <html>
