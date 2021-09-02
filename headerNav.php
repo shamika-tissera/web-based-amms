@@ -31,9 +31,54 @@
                               </form>
                            </div>
                         </li>
+
+                        <!-- Alerts Start-->
+                        <?php
+                             /*
+                              * PRIORITY
+                              * ========
+                              * 
+                              *  1. Low Inventory
+                              *  2. Maintenance Backlog
+                              *  3. Upcoming Maintenance Dates
+                              */
+                              include "includes/dbh-inc.php";
+                              $queryInventory = "SELECT inventoryName AS 'Inventory Name', threshold - currentQuantity as 'Varience' FROM InventoryItem WHERE currentQuantity < threshold order by (threshold - currentQuantity) desc;";
+                              $queryBacklog = "SELECT asset_id as 'Asset ID', serviceDue as 'Service Due', DATEDIFF(NOW(), serviceDue) as 'Delay' from NonCurrentAsset where DATEDIFF(NOW(), serviceDue) > 0  and DATEDIFF(NOW(), serviceDue) <= 90;";
+                              $queryServiceDue = "SELECT asset_id as 'Asset Code', serviceDue as 'Due by' from NonCurrentAsset where serviceDue <= DATE_ADD(NOW(), interval 2 month) and serviceDue > NOW();";
+                              
+                              $inventory = array();
+                              $backlog = array();
+                              $serviceDue = array();
+
+                              $run_pro = mysqli_query($Con,$queryInventory);
+                              while($row_pro = mysqli_fetch_array($run_pro)) {
+                                 array_push($inventory, $row_pro);
+                              }
+
+                              $run_pro = mysqli_query($Con,$queryBacklog);
+                              while($row_pro = mysqli_fetch_array($run_pro)) {
+                                 array_push($backlog, $row_pro);
+                              }
+
+                              $run_pro = mysqli_query($Con,$queryServiceDue);
+                              while($row_pro = mysqli_fetch_array($run_pro)) {
+                                 array_push($serviceDue, $row_pro);
+                              }
+                              $count = 0;
+                              if(sizeof($inventory) > 0){
+                                 $count = $count + 1;
+                              }  
+                              if(sizeof($backlog) > 0){
+                                 $count = $count + 1;
+                              }
+                              if(sizeof($serviceDue) > 0){
+                                 $count = $count + 1;
+                              }                            
+                        ?>
                         <li class="nav-item dropdown no-arrow mx-1">
                            <div class="nav-item dropdown no-arrow">
-                              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                              <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter"><?php echo "$count"; ?></span><i class="fas fa-bell fa-fw"></i></a>
                               <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                  <h6 class="dropdown-header">alerts center</h6>
                                  <a class="dropdown-item d-flex align-items-center" href="#">
@@ -41,8 +86,23 @@
                                        <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
                                     </div>
                                     <div>
-                                       <span class="small text-gray-500">December 12, 2019</span>
-                                       <p>A new monthly report is ready to download!</p>
+                                       <?php
+                                          if(sizeof($inventory) > 0){
+                                             $num = sizeof($inventory);
+                                             echo "<span class=\"small text-gray-500\">Low Inventory</span>";
+                                             echo "<p>$num inventory item(s) needs your attention!</p>";
+                                          }
+                                          else if(sizeof($backlog) > 0){
+                                             $num = sizeof($backlog);
+                                             echo "<span class=\"small text-gray-500\">Backlog</span>";
+                                             echo "<p>Maintenance activities for $num is past due!</p>";
+                                          }
+                                          else{
+                                             $num = sizeof($serviceDue);
+                                             echo "<span class=\"small text-gray-500\">Upcoming Service Due</span>";
+                                             echo "<p>Service due for $num assets during the next 2 months!</p>";
+                                          }                                          
+                                       ?>                                       
                                     </div>
                                  </a>
                                  <a class="dropdown-item d-flex align-items-center" href="#">
@@ -50,8 +110,18 @@
                                        <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
                                     </div>
                                     <div>
-                                       <span class="small text-gray-500">December 7, 2019</span>
-                                       <p>$290.29 has been deposited into your account!</p>
+                                    <?php
+                                          if(sizeof($backlog) > 0){
+                                             $num = sizeof($backlog);
+                                             echo "<span class=\"small text-gray-500\">Backlog</span>";
+                                             echo "<p>Maintenance activities for $num is past due!</p>";
+                                          }
+                                          else{
+                                             $num = sizeof($serviceDue);
+                                             echo "<span class=\"small text-gray-500\">Upcoming Service Due</span>";
+                                             echo "<p>Service due for $num assets during the next 2 months!</p>";
+                                          }                                                    
+                                       ?>  
                                     </div>
                                  </a>
                                  <a class="dropdown-item d-flex align-items-center" href="#">
@@ -59,14 +129,21 @@
                                        <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
                                     </div>
                                     <div>
-                                       <span class="small text-gray-500">December 2, 2019</span>
-                                       <p>Spending Alert: We've noticed unusually high spending for your account.</p>
+                                    <?php
+                                          if(sizeof($serviceDue) > 0){
+                                             $num = sizeof($serviceDue);
+                                             echo "<span class=\"small text-gray-500\">Upcoming Service Due</span>";
+                                             echo "<p>Service due for $num assets during the next 2 months!</p>";
+                                          }                                                 
+                                       ?>
                                     </div>
                                  </a>
                                  <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                               </div>
                            </div>
                         </li>
+                        <!-- Alerts End -->
+
                         <li class="nav-item dropdown no-arrow mx-1">
                            <div class="nav-item dropdown no-arrow">
                               <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
