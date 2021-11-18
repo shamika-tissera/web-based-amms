@@ -16,8 +16,8 @@
 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                   <div class="container-fluid">
                      <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                     <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..."><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                     <form class="d-none d-sm-inline-block me-auto ms-md-1 my-2 my-md-0 mw-100 navbar-search">
+                        <h6 class="text-center small text-gray-500">Asset and Maintenance Management System</h6>
                      </form>
                      <ul class="navbar-nav flex-nowrap ms-auto">
                         <li class="nav-item dropdown d-sm-none no-arrow">
@@ -81,7 +81,7 @@
                               <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter"><?php echo "$count"; ?></span><i class="fas fa-bell fa-fw"></i></a>
                               <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                  <h6 class="dropdown-header">alerts center</h6>
-                                 <a class="dropdown-item d-flex align-items-center" href="#">
+                                 <a class="dropdown-item d-flex align-items-center" href="lowInventoryNotif.php">
                                     <div class="me-3">
                                        <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
                                     </div>
@@ -105,7 +105,7 @@
                                        ?>                                       
                                     </div>
                                  </a>
-                                 <a class="dropdown-item d-flex align-items-center" href="#">
+                                 <a class="dropdown-item d-flex align-items-center" href="backlog.php">
                                     <div class="me-3">
                                        <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
                                     </div>
@@ -138,7 +138,7 @@
                                        ?>
                                     </div>
                                  </a>
-                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                 
                               </div>
                            </div>
                         </li>
