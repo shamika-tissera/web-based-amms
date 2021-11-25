@@ -88,7 +88,7 @@
                               </div>
                               <div class="form-group">
                                     <label for="usage">Usage<span class="text-danger">*</span></label><br>
-                                    <input type="number" class="form-control" id="usage" placeholder="Daily Usage" name="usage" maxlength="6" required>
+                                    <input type="number" class="form-control" id="usage" placeholder="Daily Usage" name="usage" maxlength="6" min="1" required>
                               </div>
                               <p id="usageError" style="display: none; font-style: italic;" class="text-danger"></p> 
                               <br>
@@ -125,7 +125,7 @@
             let usage = $("#usage").val();
             let isValid = true;
             if (assetCode === 'Select the inventory item...'){
-                event.preventDefault();
+                event.preventDefault(); //stops the default form action from occuring
                 $("#assetCodeError").show();
                 $("#assetCodeError").html("Please select an inventory item from the list...");
                 isValid = false;

@@ -15,14 +15,21 @@ if(isset($_POST["submit"])){
         header("location: ../Worker/equipmentErrorReporting.php?error=incomplete");
         exit();
     }
+    
+    if($message == null){
+        $sql_insert = "INSERT INTO workerreports(username, reported_date, asset_id, plant, criticality_machineOperations, criticality_activityConstraints) " .
+                    "VALUES (\"$uname\", NOW(), \"$assetCode\", \"$plant\", \"$criticalityOperational\", \"$criticalityActivity\");";
+    }
+    else{
+        $sql_insert = "INSERT INTO workerreports(username, reported_date, asset_id, plant, criticality_machineOperations, criticality_activityConstraints, message) " .
+                    "VALUES (\"$uname\", NOW(), \"$assetCode\", \"$plant\", \"$criticalityOperational\", \"$criticalityActivity\", \"$message\");";
+    }
 
-    $sql_insert = "INSERT INTO workerreports(username, reported_date, asset_id, plant, criticality_machineOperations, criticality_activityConstraints, message) " .
-                    "VALUES ($uname, NOW(), $assetCode, $plant, $criticalityOperational, $criticalityActivity, $message);";
-
+                    echo "<script>alert(\"$sql_insert\")</script>";
     $run_out = mysqli_query($conn, $sql_insert);
     if($run_out){
         echo "<script> alert('Submitted Successfully!')</script>";
-        echo "<script> window.open('equipmentErrorReporting.php','_self')</script>";
+        header("location: ../Worker/equipmentErrorReporting.php");
     }
     else{
         echo "<script> alert('Not submitted due to an internal error!')</script>";

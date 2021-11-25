@@ -27,7 +27,7 @@
                      </div>
                      <div class="card-body">
                         <div class="col-6 mx-auto">
-                           <form action="../includes/worker_equipmentErrorReporting-inc.php" method="POST">
+                           <form id="mainForm" method="POST">
                               <div class="row justify-content-center">
                                  <div class="form-group">
                                     <label for="assetCode">Asset Code<span class="text-danger">*</span></label><br>
@@ -105,7 +105,7 @@
                               <br>
                               <div class="row">
                                  <div class="d-flex col-5 justify-content-center">
-                                    <button style="width: 100%;" type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                    <button style="width: 100%;" type="submit" name="submit" class="btn btn-primary" id="submitBtn">Submit</button>
                                  </div>                                  
                               </div>
                               <?php
@@ -127,6 +127,28 @@
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
       <script>
+         $("#submitBtn").click(function(event){
+            //let assetCode = $('#assetCode').val();
+            //let usage = $("#usage").val();
+            $("#mainForm").attr('action', '../includes/worker_equipmentErrorReporting-inc.php');
+            let isValid = true;
+            if (assetCode === 'Select the asset code...'){
+                event.preventDefault(); //stops the default form action from occuring
+                //$("#assetCodeError").show();
+                //$("#assetCodeError").html("Please select an inventory item from the list...");
+                isValid = false;
+            }         
+            if(usage === "" || isNaN(usage)){
+                event.preventDefault();
+                //$("#usageError").show();
+                //$("#usageError").html("Please provide a valid value for usage...");
+                isValid = false;
+            }            
+            if(isValid){
+                $("#mainForm").attr('action', '../includes/worker_equipmentErrorReporting-inc.php');
+            }
+          })
+
          function changeItems(){            
             let assetCode = document.getElementById("assetCode").value;
             let assetType = document.getElementById("assetType");
