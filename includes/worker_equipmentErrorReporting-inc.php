@@ -24,15 +24,14 @@ if(isset($_POST["submit"])){
         $sql_insert = "INSERT INTO workerreports(username, reported_date, asset_id, plant, criticality_machineOperations, criticality_activityConstraints, message) " .
                     "VALUES (\"$uname\", NOW(), \"$assetCode\", \"$plant\", \"$criticalityOperational\", \"$criticalityActivity\", \"$message\");";
     }
-
-                    echo "<script>alert(\"$sql_insert\")</script>";
     $run_out = mysqli_query($conn, $sql_insert);
     if($run_out){
         echo "<script> alert('Submitted Successfully!')</script>";
         header("location: ../Worker/equipmentErrorReporting.php");
     }
     else{
-        echo "<script> alert('Not submitted due to an internal error!')</script>";
+        echo "<script> alert('You have already submitted an error report on this asset today! Please try again tomorrow...')</script>";
+        header("location: ../Worker/equipmentErrorReporting.php");
     }
 }
 else{

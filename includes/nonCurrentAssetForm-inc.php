@@ -27,7 +27,7 @@ if(isset($_POST["submit"])){
         empty($price) || empty($depreBegin) || empty($lifetime) || empty($depreRate)
         || empty($depreMethod) || empty($plant) || empty($condition) || empty($criticality)
         || empty($serviceInterval)){
-            header("location: ../nonCurrentAssetForm.php?error=empty");
+            header("location: ../addNonCurrentAsset?error=empty");
             exit();  
     }
     else{
@@ -99,6 +99,6 @@ if(isset($_POST["submit"])){
     }
 }
 else{
-    header("location: ../nonCurrentAssetForm.php");
+    header("location: ../addNonCurrentAsset");
     exit();
 }

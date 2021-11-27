@@ -49,8 +49,7 @@
                     </ul>
                 </div>
              </li>
-            <li class="nav-item"><a class="nav-link" href="register.php"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="blank.php"><i class="fas fa-window-maximize"></i><span>Blank Page</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="register.php"><i class="fas fa-user-circle"></i><span>Register User</span></a></li>
         </ul>
         <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
     </div>

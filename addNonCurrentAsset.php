@@ -29,23 +29,25 @@
                         <p class="text-primary m-0 fw-bold">Add Asset</p>
                      </div>
                      <div class="card-body">
-                     <form action="includes/nonCurrentAssetForm-inc.php" method="POST">
+                     <form action="includes/nonCurrentAssetForm-inc.php" method="POST" id="assetForm">
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="asset_type">Asset Type<span class="text-danger">*</span></label><br>
                     <select class="browser-default custom-select" id="asset_type" name="asset_type">
-                        <option selected="">Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option>Select item</option>
+                        <option>One</option>
+                        <option>Two</option>
+                        <option>Three</option>
                     </select>
+                    <p style="color:red; display: none;" id="assetTypeErr">*Please complete this field!</p>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group">
                     <label for="assetCode">Asset Code<span class="text-danger">*</span></label><br>
                     <input type="text" class="form-control" id="assetCode" placeholder="Enter asset code" name="assetCode">
+                    <p style="color:red; display: none;" id="assetCodeErr">*Please complete this field!</p>
                 </div>
             </div>
         </div>   
@@ -55,11 +57,12 @@
                 <div class="form-group">
                     <label for="manufacturer">Manufacturer<span class="text-danger">*</span></label><br>
                     <select class="browser-default custom-select" id="manufacturer" name="manufacturer">
-                        <option selected="">Open this select menu</option>
+                        <option selected="">Select item</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
+                    <p style="color:red; display: none;" id="manufacturerErr">*Please complete this field!</p>
                 </div>
             </div>
             <div class="col-6">
@@ -75,11 +78,12 @@
                 <div class="form-group">
                     <label for="supplier">Supplier<span class="text-danger">*</span></label><br>
                     <select class="browser-default custom-select" id="supplier" name="supplier">
-                        <option selected="">Open this select menu</option>
+                        <option selected="">Select item</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
+                    <p style="color:red; display: none;" id="supplierErr">*Please complete this field!</p>
                 </div>
             </div>
             <div class="col-6">
@@ -105,7 +109,8 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="price">Purchase Price&nbsp;/&nbsp;Current value<span class="text-danger">*</span></label><br>
-                    <input type="text" class="form-control" id="price" placeholder="***validation" name="price">
+                    <input type="number" class="form-control" id="price" placeholder="Enter the current value" name="price" min="1">
+                    <p style="color:red; display: none;" id="priceErr">*Please complete this field!</p>
                 </div>
             </div>
         </div>
@@ -115,13 +120,15 @@
                     <label for="depreBegin">Depreciation Start<span class="text-danger">*</span></label><br>
                     <div class="input-group date">
                         <input type="date" class="form-control" id="depreBegin" name="depreBegin">
+                        <p style="color:red; display: none;" id="depreBeginErr">*Please complete this field!</p>
                     </div>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group">
                     <label for="lifetime">Lifetime (Years)<span class="text-danger">*</span></label><br>
-                    <input type="text" class="form-control" id="lifetime" placeholder="***validation" name="lifetime">
+                    <input type="number" class="form-control" id="lifetime" placeholder="Enter lifetime in years" name="lifetime" min="0">
+                    <p style="color:red; display: none;" id="lifetimeErr">*Please complete this field!</p>
                 </div>
             </div>
         </div>
@@ -129,7 +136,8 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="depreRate">Depreciation Rate<span class="text-danger">*</span></label><br>
-                    <input type="text" class="form-control" id="depreRate" placeholder="***validation" name="depreRate">
+                    <input type="number" class="form-control" id="depreRate" placeholder="Enter the depreciation rate as a percentage" name="depreRate" min="0" max="100">
+                    <p style="color:red; display: none;" id="depreRateErr">*Please complete this field!</p>
                 </div>
             </div>
             <div class="col-6">
@@ -237,13 +245,14 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="serviceInterval">Service Interval<span class="text-danger">*</span></label><br>
-                        <input type="text" class="form-control" id="serviceInterval" placeholder="***validation" name="serviceInterval">
+                        <input type="number" class="form-control" id="serviceInterval" placeholder="Enter the asset service interval" name="serviceInterval" min="0">
+                        <p style="color:red; display: none;" id="serviceIntervalErr">*Please complete this field!</p>
                     </div>
                 </div>                
             </div>
             <br>
             <div class="row">
-                <div class="d-flex col-5 justify-content-center">
+                <div class="d-flex col-12 justify-content-center">
                     <button style="width: 100%;" type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </div>                
             </div>
@@ -254,10 +263,18 @@
 
                         ?>
                     </p>
-                </div>                
+                </div>  
+                <br>
+                <?php
+                if(isset($_GET["error"])){
+                    if($_GET["error"] == "empty"){
+                        echo '<p style="color:red">*Please complete all required fields!</p>';
+                    }
+                }
+            ?>              
             </div>
     </form>
-                     </div>
+    </div>
                   </div>
                </div>
             </div>
@@ -267,6 +284,6 @@
          </div>
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script><script src="assets/js/script.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script><script src="assets/js/script.min.js"></script><script src="assets/js/validationAsset.js"></script>
    </body>
 </html>

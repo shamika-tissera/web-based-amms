@@ -6,7 +6,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Blank Page - Brand</title>
+      <title>Asset Reporting</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
       <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -44,6 +44,7 @@
                                        ?>                                       
                                     </select>
                                  </div>
+                                 <p id="assetCodeError" style="display: none; font-style: italic;" class="text-danger"></p>
                               </div>
                               <div class="row justify-content-center">
                                  <div class="form-group">
@@ -126,24 +127,18 @@
          </div>
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
+      <!-- TODO: Add Modal -->
       <script>
          $("#submitBtn").click(function(event){
-            //let assetCode = $('#assetCode').val();
-            //let usage = $("#usage").val();
-            $("#mainForm").attr('action', '../includes/worker_equipmentErrorReporting-inc.php');
+            let assetCode = $('#assetCode').val();
+            // $("#mainForm").attr('action', '../includes/worker_equipmentErrorReporting-inc.php');
             let isValid = true;
             if (assetCode === 'Select the asset code...'){
                 event.preventDefault(); //stops the default form action from occuring
-                //$("#assetCodeError").show();
-                //$("#assetCodeError").html("Please select an inventory item from the list...");
+                $("#assetCodeError").show();
+                $("#assetCodeError").html("Please select an asset code from the list...");
                 isValid = false;
-            }         
-            if(usage === "" || isNaN(usage)){
-                event.preventDefault();
-                //$("#usageError").show();
-                //$("#usageError").html("Please provide a valid value for usage...");
-                isValid = false;
-            }            
+            }              
             if(isValid){
                 $("#mainForm").attr('action', '../includes/worker_equipmentErrorReporting-inc.php');
             }
