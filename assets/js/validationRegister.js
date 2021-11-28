@@ -26,15 +26,14 @@ document.getElementById("regUser").addEventListener("submit", function(event){
         document.getElementById("r_passwordErr").style.display = "block";
     }
     if(isValid){
-        if(pass !== r_pass){
+        if(pass.value !== r_pass.value){
             isValid = false;
             alert("Passwords do not match!");
         }
     }
-    debugger;
     if(isValid){
-        $("#assetForm").attr('method', 'POST');
-        $("#assetForm").attr('action', './includes/register-inc.php');
+        $("#regUser").attr('method', 'POST');
+        $("#regUser").attr('action', './includes/register-inc.php');
     }
     else{
         event.preventDefault();

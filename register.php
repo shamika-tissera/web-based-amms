@@ -48,7 +48,7 @@
                                        <div class="col-sm-6 mb-3 mb-sm-0"><label for="password">Password<span class="text-danger">*</span></label><input type="password" class="form-control" id="password" placeholder="Password" name="password" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="passwordErr">*Please complete this field!</p></div>
                                        <div class="col-sm-6"><label for="r_password">Repeat Password<span class="text-danger">*</span></label><input type="password" class="form-control" id="r_password" placeholder="Repeat Password" name="r_password" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="r_passwordErr">*Please complete this field!</p></div>
                                     </div><br/>
-                                    <button class="btn btn-primary d-block btn-user w-100" type="submit">Register Account</button>
+                                    <button class="btn btn-primary d-block btn-user w-100" type="submit" name="submit">Register</button>
                                     <hr>
                                  </form>
                                  <div class="text-center"></div>
