@@ -42,7 +42,7 @@ if(isset($_POST["submit"])){
                     "VALUES('$code', $lifetime, $depreRate, '$condition', '$manu', '$plant', '$serial', '$depreMethod', $price, $serviceInterval, '$state', '$asset_type', '$installationDate');";
                 
                 $run_out = mysqli_query($conn, $sql);
-
+                echo "<script> alert(\"$sql\")</script>";
                 if ($run_out) {
                     //update service due date
                     $update_service = "CALL UpdateNextServiceDue('$code');";
@@ -50,7 +50,7 @@ if(isset($_POST["submit"])){
 
                     if($run_out){
                         echo "<script> alert('Asset Added Successfully!')</script>";
-                        echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                        echo "<script> window.open('addNonCurrentAsset.php','_self')</script>";
                     }
                     else{
                         echo "<script> alert('Asset not recorded!')</script>";

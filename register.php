@@ -11,6 +11,7 @@
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    </head>
    <body id="page-top">
       <div id="wrapper">
@@ -27,27 +28,25 @@
                                  <div class="text-left">
                                     <h4 class="text-dark mb-4">Create an Account</h4>
                                  </div>
-                                 <form class="user">
-                                    <div class="row mb-3">
-                                       <div class="col-sm-6 mb-3 mb-sm-0"><input type="text" class="form-control" id="fname" placeholder="First Name" name="fname" spellcheck="false" data-ms-editor="true"></div>
-                                       <div class="col-sm-6"><input type="text" class="form-control" id="lname" placeholder="Last Name" name="lname" spellcheck="false" data-ms-editor="true"></div>
+                                 <form id="regUser">
+                                    <div class="row mb-3">                                       
+                                       <div class="col-sm-6 mb-3 mb-sm-0"><label for="fname">First Name<span class="text-danger">*</span></label><br><input type="text" class="form-control" id="fname" placeholder="First Name" name="fname" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="fnameErr">*Please complete this field!</p></div>                                       
+                                       <div class="col-sm-6"><label for="lname">Last Name<span class="text-danger">*</span></label><br><input type="text" class="form-control" id="lname" placeholder="Last Name" name="lname" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="lnameErr">*Please complete this field!</p></div>
                                     </div>
-                                    <br/>
                                     <div class="row">
-                                       <div class="col"><input type="text" class="form-control" id="uname" placeholder="Username" name="uname" spellcheck="false" data-ms-editor="true"></div>
-                                       <div class="col">
-                                          <select class="browser-default custom-select" id="state" name="state">
-                                             <option selected="In use">Manager</option>
-                                             <option value="In Stock">Worker</option>
-                                             <option value="Under Maintenance">Accountant</option>
-                                          </select></div>
+                                       <div class="col"><label for="uname">Username<span class="text-danger">*</span></label><input type="text" class="form-control" id="uname" placeholder="Username" name="uname" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="unameErr">*Please complete this field!</p></div>
+                                       <div class="col"><label for="occu">Occupation<span class="text-danger">*</span></label>
+                                          <select class="browser-default custom-select" id="occu" name="occu">
+                                             <option selected="manager">Manager</option>
+                                             <option value="worker">Worker</option>
+                                             <option value="accountant">Accountant</option>
+                                          </select><p style="color:red; display: none;" id="supplierErr">*Please complete this field!</p></div>
                                     </div>
-                                    <br/>
                                     <div class="w-100"></div>
                                     <div class="mb-3"></div>
                                     <div class="row mb-3">
-                                       <div class="col-sm-6 mb-3 mb-sm-0"><input type="text" class="form-control" id="password" placeholder="Password" name="password" spellcheck="false" data-ms-editor="true"></div>
-                                       <div class="col-sm-6"><input type="password" class="form-control" id="r_password" placeholder="Repeat Password" name="r_password" spellcheck="false" data-ms-editor="true"></div>
+                                       <div class="col-sm-6 mb-3 mb-sm-0"><label for="password">Password<span class="text-danger">*</span></label><input type="password" class="form-control" id="password" placeholder="Password" name="password" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="passwordErr">*Please complete this field!</p></div>
+                                       <div class="col-sm-6"><label for="r_password">Repeat Password<span class="text-danger">*</span></label><input type="password" class="form-control" id="r_password" placeholder="Repeat Password" name="r_password" spellcheck="false" data-ms-editor="true"><p style="color:red; display: none;" id="r_passwordErr">*Please complete this field!</p></div>
                                     </div><br/>
                                     <button class="btn btn-primary d-block btn-user w-100" type="submit">Register Account</button>
                                     <hr>
@@ -65,5 +64,6 @@
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script><script src="assets/js/script.min.js"></script>
+      <script src="assets/js/validationRegister.js"></script>
    </body>
 </html>

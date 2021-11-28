@@ -1,17 +1,18 @@
 <?php include 'includes/verifier-inc.php'; ?>
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Blank Page - Brand</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-      <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
-   </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Add Asset</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
    <body id="page-top">
       <div id="wrapper">
          
@@ -29,7 +30,7 @@
                         <p class="text-primary m-0 fw-bold">Add Asset</p>
                      </div>
                      <div class="card-body">
-                     <form action="includes/nonCurrentAssetForm-inc.php" method="POST" id="assetForm">
+                     <form id="assetForm">
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
@@ -120,8 +121,8 @@
                     <label for="depreBegin">Depreciation Start<span class="text-danger">*</span></label><br>
                     <div class="input-group date">
                         <input type="date" class="form-control" id="depreBegin" name="depreBegin">
-                        <p style="color:red; display: none;" id="depreBeginErr">*Please complete this field!</p>
                     </div>
+                    <p style="color:red; display: none;" id="depreBeginErr">*Please complete this field!</p>
                 </div>
             </div>
             <div class="col-6">
@@ -148,7 +149,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="depreMethod" id="straight_line" value="Straight-Line">
                                 <label class="form-check-label" for="straight_line">Straight-Line</label>
-                              </div>
+                            </div>
                         </div>
                         <div class="col-4" style="padding-top: 7px;">
                             <div class="form-check">
@@ -201,10 +202,11 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="installationDate">Installation Date&nbsp;/&nbsp;Acceptance Date</label><br>
+                        <label for="installationDate">Installation Date&nbsp;/&nbsp;Acceptance Date<span class="text-danger">*</span></label><br>
                         <div class="input-group date">
                             <input type="date" class="form-control" id="installationDate" name="installationDate">
                         </div>
+                        <p style="color:red; display: none;" id="installationDateErr">*Please complete this field!</p>
                     </div>
                 </div>
                 <div class="col-6">
