@@ -5,6 +5,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
       <title>Table - Brand</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -50,7 +51,7 @@
                }
                $i = 0;
                
-               $get_pro = "SELECT asset_id, assetType, lifetime, costOfPurchase, depreciationMethod, depreciationRate, date_format(now() , '%Y') - date_format(purchaseDate , '%Y') as 'yearDiff', manufacturer, serviceInterval FROM NonCurrentAsset where disposed = 0";
+               $get_pro = "SELECT asset_id, assetType, lifetime, costOfPurchase, depreciationMethod, depreciationRate, date_format(now() , '%Y') - date_format(purchaseDate , '%Y') as 'yearDiff', manufacturer, serviceInterval, warrantyCode, serviceDue, state FROM NonCurrentAsset where disposed = 0";
                
                $run_pro = mysqli_query($Con,$get_pro);
                echo "<script>";
@@ -64,10 +65,13 @@
                   $depreciationRate = $row_pro['depreciationRate'];
                   $yearDiff = $row_pro['yearDiff'];
                   $costOfPurchase = $row_pro['costOfPurchase'];
+                  $warrantyCode = $row_pro['warrantyCode'];
+                  $serviceDue = $row_pro['serviceDue'];
+                  $state = $row_pro['state'];
                   $manu = $row_pro['manufacturer'];
                   $carryingValue = calculateCarryingValue($depreciationMethod, floatval($depreciationRate), floatval($yearDiff), floatval($costOfPurchase));
                   
-                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'life_time': '$lifetime', 'manu': '$manu', 'service_interval': '$service_interval', 'carrying_value': '$carryingValue'},";
+                  echo "{'asset_id': '$asset_id', 'asset_type': '$asset_type', 'life_time': '$lifetime', 'manu': '$manu', 'service_interval': '$service_interval', 'carrying_value': '$carryingValue', 'warrantyCode': '$warrantyCode', 'serviceDue': '$serviceDue', 'state': '$state'},";
                   
                }
                echo "];";                  
@@ -78,7 +82,7 @@
                   <h3 class="text-dark mb-4">Assets</h3>
                   <div class="card shadow">
                      <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Employee Info</p>
+                        <p class="text-primary m-0 fw-bold">Asset Information</p>
                      </div>
                      <div class="card-body">
                         <div class="row">
@@ -111,6 +115,7 @@
                                     <th>Service Interval</th>
                                     <th>Carrying Value</th>
                                     <th>Dispose</th>
+                                    <th>Edit</th>
                                  </tr>
                               </thead>                
                               
@@ -126,6 +131,7 @@
                                     <td><strong>Service Interval</strong></td>
                                     <td><strong>Carrying Value</strong></td>
                                     <td><strong>Dispose</strong></td>
+                                    <td><strong>Edit</strong></td>
                                  </tr>
                               </tfoot>
                            </table>
@@ -193,6 +199,7 @@
                         <td> ${records[i].service_interval} </td>
                         <td> ${records[i].carrying_value} </td>
                         <td> <a href="nonCurrentAssetInfo.php?dispose=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#disposalModal" data-code="${records[i].asset_id}">Dispose</a></td>
+                        <td> <a href="nonCurrentAssetInfo.php?edit=${records[i].asset_id}" type="button" class="btn btn-default" data-toggle="modal" data-target="#editModal" data-code="${records[i].asset_id}">Edit</a></td>
                         </tr>`;
             tableBody.innerHTML += row;
         }
@@ -212,7 +219,7 @@
 
                   <!-- disposal asset form start -->
                   <div class="modal-body">
-                     <form action="includes/dispose-inc.php" method="POST">
+                     <form id="disposalForm">
                         <div class="form-group">
                            <label for="assetCode" class="col-form-label">Asset Code:</label>
                            <input type="text" class="form-control" id="assetCode" value="" name="assetCode" readonly="readonly">
@@ -234,6 +241,23 @@
                   <!-- disposal asset form end -->                  
                   
                   <script>
+                     $("#disposalForm").submit(function(event){
+                        var isValid = true;
+                        let assetCode = $("#assetCode").val();
+                        let disposedDate = $("#disposedDate").val();
+                        let disposedAmount = $("#disposedAmount").val();
+                        if(assetCode === "" || disposedDate === "" || disposedAmount === ""){
+                           isValid = false;
+                        }
+                        if(!isValid){
+                           event.preventDefault();
+                           alert("Please fill all fields!");
+                        }
+                        else{
+                           $("#disposalForm").attr('method', 'POST');
+                           $("#disposalForm").attr('action', 'includes/dispose-inc.php');
+                        }
+                     });
                      $('#disposalModal').on('show.bs.modal', function (event) {
                         var button = $(event.relatedTarget) // Button that triggered the modal
                         var recipient = button.data('code') // Extract info from data-* attributes
@@ -249,6 +273,135 @@
          </div>
          <!-- Modal End -->
 
+
+         <!-- Edit Modal Start -->
+         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="disposalModalHead">Edit Asset</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>                  
+
+                  <!-- Edit asset form start -->
+                  <div class="modal-body">
+                     <form id="updateForm">
+                        <div class="form-group">
+                           <label for="assetCode" class="col-form-label">Asset Code:</label>
+                           <input type="text" class="form-control" id="assetCodeUpdate" value="" name="assetCodeUpdate" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                           <label for="assetListSelected" class="col-form-label">Asset Type:</label>
+                           <select class="form-select" id="assetList" name="assetListSelected"></select>
+                           <?php
+                              $sql_select = "SELECT type FROM assetType;";
+                              $run_query = mysqli_query($conn, $sql_select);
+                              echo "<script>var assetTypes = [";
+                                 while($row = mysqli_fetch_array($run_query)){
+                                    $ins = $row['type'];
+                                    echo "\"$ins\", ";
+                                 }
+                              echo "];</script>";
+                           ?>
+                        </div>
+                        <div class="form-group">
+                           <label for="lifetime" class="col-form-label">Lifetime:</label>
+                           <input type="number" min="0" class="form-control" id="lifetime" name="lifetime">
+                        </div>
+                        <div class="form-group">
+                           <label for="manu" class="col-form-label">Manufacturer:</label>
+                           <input type="text" class="form-control" id="manu" name="manu">
+                        </div>
+                        <div class="form-group">
+                           <label for="service_interval" class="col-form-label">Service interval:</label>
+                           <input type="number" min="0" class="form-control" id="service_interval" name="service_interval">
+                        </div>
+                        <div class="form-group">
+                           <label for="state" class="col-form-label">State:</label>
+                           <select class="form-select" id="state" name="state"></select>
+                        </div>
+                        <input type="hidden" name="oldAssetCode" id="oldAssetCode">
+                        <div class="form-group">
+                           <label for="warranty_code" class="col-form-label">Warranty code:</label>
+                           <input type="text" class="form-control" id="warranty_code" name="warranty_code">
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="submit">Update</button>
+                        </div>
+                     </form>
+                  </div>
+                  <!-- Edit asset form end -->                  
+                  
+                  <script>
+                     var old;
+                     $("#updateForm").submit(function(event){
+                        var isValid = true;
+                        let assetCode = $("#assetCodeUpdate").val();
+                        let lifetime = $("#lifetime").val();
+                        let manu = $("#manu").val();
+                        let service_interval = $("#service_interval").val();
+                        let warranty_code = $("#warranty_code").val();
+                        if(assetCode === "" || lifetime === "" || manu === "" || service_interval === "" || warranty_code === ""){
+                           isValid = false;
+                        }
+                        if(!isValid){
+                           event.preventDefault();
+                           alert("Please fill all fields!");
+                        }
+                        else{
+                           $("#oldAssetCode").attr("value", old);
+                           $("#updateForm").attr('method', 'POST');
+                           $("#updateForm").attr('action', 'includes/updateAsset-inc.php');
+                        }
+                     });
+                     $('#editModal').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget) // Button that triggered the modal
+                        var recipient = button.data('code') // Extract info from data-* attributes
+                        old = recipient;
+                        var required;
+                        var requiredArr = [];
+                        records.forEach(element => {
+                           if(element['asset_id'] === recipient){
+                              console.log(element);
+                              required = element['asset_type'];
+                              requiredArr = element;
+                           }
+                        });
+                        $('.clearExit').remove();
+                        assetTypes.forEach(element => {
+                           if(element === required){
+                              $("#assetList").append(`<option class="clearExit" selected="${element}">${element}</option>`);
+                           }
+                           else{
+                              $("#assetList").append(`<option class="clearExit" value="${element}">${element}</option>`);
+                           }
+                        });
+                        var conditionList = ["Working", "To inspect", "Brocken"];
+                        conditionList.forEach(element => {
+                           if(element === requiredArr["state"]){
+                              $("#state").append(`<option class="clearExit" selected="${element}">${element}</option>`);
+                           }
+                           else{
+                              $("#state").append(`<option class="clearExit" value="${element}">${element}</option>`);
+                           }
+                        });
+                        $("#lifetime").attr("value", requiredArr['life_time']);
+                        $("#manu").attr("value", requiredArr["manu"]);
+                        $("#service_interval").attr("value", requiredArr["service_interval"]);
+                        $("#state").attr("value", requiredArr["state"]);
+                        $("#warranty_code").attr("value", requiredArr["warrantyCode"]);
+                        var modal = $(this)
+                        modal.find('.modal-title').text('Update information for ' + recipient);
+                        modal.find('.modal-body #assetCodeUpdate').val(recipient)
+                  })
+                  </script>
+               </div>
+            </div>
+         </div>
+         <!-- Edit Modal End -->
          </div>
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
