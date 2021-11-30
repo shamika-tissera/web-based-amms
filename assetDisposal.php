@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php include 'includes/verifier-inc.php'; ?>
 <html>
    <head>
       <meta charset="utf-8">
