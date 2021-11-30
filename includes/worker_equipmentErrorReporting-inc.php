@@ -26,12 +26,16 @@ if(isset($_POST["submit"])){
     }
     $run_out = mysqli_query($conn, $sql_insert);
     if($run_out){
-        echo "<script> alert('Submitted Successfully!')</script>";
-        header("location: ../Worker/equipmentErrorReporting.php");
+        echo "<SCRIPT>
+            alert('Submitted Successfully!')
+            window.location.replace('../Worker/equipmentErrorReporting.php');
+            </SCRIPT>";
     }
     else{
-        echo "<script> alert('You have already submitted an error report on this asset today! Please try again tomorrow...')</script>";
-        header("location: ../Worker/equipmentErrorReporting.php");
+        echo "<SCRIPT>
+            alert('You have already submitted an error report on this asset today! Please try again tomorrow...')
+            window.location.replace('../Worker/equipmentErrorReporting.php');
+            </SCRIPT>";
     }
 }
 else{

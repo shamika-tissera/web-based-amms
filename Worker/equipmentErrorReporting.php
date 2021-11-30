@@ -21,6 +21,7 @@
             <div id="content">
                <?php include 'headerNav.php' ?>
                <div class="container-fluid">
+               <h3 class="text-dark mb-4">Asset Reporting</h3>
                   <div class="card shadow">
                      <div class="card-header py-3">
                         <p class="text-primary m-0 fw-bold">Report</p>

@@ -25,9 +25,9 @@
                         <li class="nav-item"><a class="nav-link" href="assetDisposal.php"><i class="fas fa-shuttle-van"></i> Utilization</a></li>                
                     </ul>
                 </div>
-             </li>
+            </li>
 
-             <!-- Inventory Assets Drop Down -->
+            <!-- Inventory Assets Drop Down -->
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-warehouse"></i><span> Inventory Management</span></a>
                 <div class="collapse" id="inventory">

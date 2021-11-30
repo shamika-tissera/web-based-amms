@@ -11,11 +11,16 @@ if(isset($_POST["submitInfo"])){
         exit();
     }
     $sql_update = "UPDATE userinfo SET FirstName = \"$first_name\", LastName = \"$last_name\", EmpCategory = \"$occu\" WHERE Username = \"$username\";";
+    echo "<script>alert(\"$sql_update\")</script>";
     $run_update = mysqli_query($conn, $sql_update);
     if(!$run_update){
         echo "<script>alert(\"Failed to update information due to an internal error!\")</script>";
         header("location: ../profile.php");
         exit();
+    }
+    else{
+        echo "<script>alert(\"Updated information successfully!\")</script>";
+        header("location: ./logout-inc.php?redirect=info_change");
     }
 }
 else if(isset($_POST["submitPass"])){
@@ -34,8 +39,14 @@ else if(isset($_POST["submitPass"])){
         header("location: ../profile.php");
         exit();
     }
+    else{
+        echo "<SCRIPT>
+        alert('Password changed successfully!')
+        window.location.replace('../profile.php');
+        </SCRIPT>";
+    }
 }
 else{
-    header("location: ../nonCurrentAssetInfo.php");
+    header("location: ../profile.php");
     exit();
 }

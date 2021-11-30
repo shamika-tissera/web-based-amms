@@ -5,7 +5,7 @@ if(isset($_POST["submit"])){
     $inventoryItem = $_POST["assetCode"];
     $usage = $_POST["usage"];
     if(empty($inventoryItem) || empty($usage)){
-        header("location: ../Worker/stockUsage.php?error=incomplete");
+        header("location: ../Worker/index.php?error=incomplete");
         exit();
     }
     $sql_getCurrentLevel = "SELECT currentQuantity FROM inventoryitem WHERE inventoryName = '$inventoryItem'"; 
@@ -27,11 +27,11 @@ if(isset($_POST["submit"])){
             exit();
         }
         else{            
-            header("location: ../Worker/stockUsage.php?status=success");
+            header("location: ../Worker/index.php?status=success");
             exit();
         }
 }
 else{
-    header("location: ../Worker/stockUsage.php");
+    header("location: ../Worker/index.php");
     exit(); 
 }

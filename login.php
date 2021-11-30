@@ -50,6 +50,9 @@
                                              
                                           }
                                     }
+                                    if(isset($_POST["redirect"]) && $_POST["redirect"] == "info_change"){
+                                       echo "<script>alert(\"Please login again\"</script>";
+                                    }
                                  ?>
                                  <hr>
                               </form>

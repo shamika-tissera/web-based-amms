@@ -24,9 +24,10 @@ if(isset($_POST["submit"])){
         echo "<script>alert(\"Failed to record disposal due to an internal error!\")</script>";
         exit();
     }
-
-    echo "<script>alert(\"Asset disposal recorded successfully!\")</script>";
-    header("location: ../preventiveMaintenance.php");
+    echo "<SCRIPT>
+        alert('Asset disposal recorded successfully!')
+        window.location.replace('../preventiveMaintenance.php');
+        </SCRIPT>";
 }
 else{
     header("location: ../preventiveMaintenance.php");

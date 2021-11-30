@@ -23,8 +23,10 @@ if(isset($_POST["submit"])){
                     VALUES (\"$fname\", \"$lname\", \"$uname\", \"$pass\", \"$occu\", \"$inst\");";
     $run_out = mysqli_query($conn, $sql_insert);
     if($run_out){
-        echo "<script> alert('Submitted Successfully!')</script>";
-        header("location: ../register.php");
+        echo "<SCRIPT>
+        alert('Submitted Successfully!')
+        window.location.replace('../register.php');
+        </SCRIPT>";
     }
     else{
         echo "<script> alert('An internal error was encountered during submission... Please try again later.')</script>";

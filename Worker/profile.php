@@ -1,5 +1,5 @@
 <?php 
-include 'includes/verifier-inc.php'; 
+include '../includes/verfier_worker-inc.php'; 
 $username = $_SESSION['username'];
 $first_name = $_SESSION['firstname'];
 $last_name = $_SESSION['lastname'];
@@ -11,11 +11,11 @@ echo "<script>var occu = \"$occu\";</script>";
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
       <title>Profile - Brand</title>
-      <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+      <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+      <link rel="stylesheet" href="../assets/fonts/fontawesome5-overrides.min.css">
    </head>
    <body id="page-top">
       <div id="wrapper">
@@ -33,7 +33,7 @@ echo "<script>var occu = \"$occu\";</script>";
                      <div class="col-lg-4">
                         <div class="card mb-3">
                            <div class="card-body text-center shadow">
-                              <img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
+                              <img class="rounded-circle mb-3 mt-4" src="../assets/img/avatars/draco.jpg" width="160" height="160">
                               <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
                            </div>
                         </div>
@@ -128,7 +128,7 @@ echo "<script>var occu = \"$occu\";</script>";
                   }
                   else{
                      $("#userPass").attr('method', 'POST');
-                     $("#userPass").attr('action', 'includes/updateUser-inc.php');
+                     $("#userPass").attr('action', '../includes/updateUser-inc.php');
                   }
                });
 
@@ -151,7 +151,7 @@ echo "<script>var occu = \"$occu\";</script>";
                   else{
                      if(confirm("You will be logged out of the current session. Continue?")){
                         $("#userInfo").attr("method", "POST");
-                        $("#userInfo").attr("action", "includes/updateUser-inc.php");
+                        $("#userInfo").attr("action", "../includes/updateUser-inc.php");
                      }
                      else{
                         event.preventDefault();
@@ -170,6 +170,6 @@ echo "<script>var occu = \"$occu\";</script>";
          </div>
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script><script src="assets/js/script.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script><script src="../assets/js/script.min.js"></script>
    </body>
 </html>
