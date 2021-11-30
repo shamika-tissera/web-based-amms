@@ -60,16 +60,19 @@ function loginUser($conn, $uname, $pwd) {
         $_SESSION['username'] = $userExists["Username"];
         $_SESSION['firstname'] = $userExists["FirstName"];
         $_SESSION['lastname'] = $userExists["LastName"];
+        
         switch ($empCategory) {
             case 'manager':
             case 'Manager':
                 $_SESSION['category'] = 'manager';
+                $_SESSION['avatar'] = $userExists["avatarPath"];
                 header('location: ../index.php');
                 break;
             
             case 'Worker':
             case 'worker':
                 $_SESSION['category'] = 'worker';
+                $_SESSION['avatar'] = "../" . $userExists["avatarPath"]; //since worker's pages are in a different folder, the path must be corrected.
                 header('location: ../Worker/index.php');
                 break;
 

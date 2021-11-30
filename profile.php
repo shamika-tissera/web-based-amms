@@ -31,12 +31,31 @@ echo "<script>var occu = \"$occu\";</script>";
                   <h3 class="text-dark mb-4">Profile</h3>
                   <div class="row mb-3">
                      <div class="col-lg-4">
+                        <form id="changePic">
                         <div class="card mb-3">
                            <div class="card-body text-center shadow">
-                              <img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
-                              <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
+                              <img class="rounded-circle mb-3 mt-4" <?php echo "src=\"$avatar\"";?> width="160" height="160">
+                              <div class="mb-3"><label class="btn btn-default">Browse<input id="photo" type="file" hidden></label><button class="btn btn-primary btn-sm" type="file">Change</button></div>
                            </div>
+                           <script>
+                              $("#changePic").submit(function(event){
+                                 let isValid = true;
+                                 let image = $("#photo");
+                                 const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+                                 isValid = image.files && $.inArray(image['type'], acceptedImageTypes);
+                                 if(isValid){
+                                    $("#changePic").attr("method", "POST");
+                                    $("#changePic").attr("enctype", "multipart/form-data");
+                                    $("#changePic").attr("action", "includes/uploadImage.php");
+                                 }
+                                 else{
+                                    $("#changePic").preventDefault();
+                                    alert("Please select a valid image!");
+                                 }
+                              });
+                           </script>
                         </div>
+                        </form>
                         
                      </div>
                      <div class="col-lg-8">

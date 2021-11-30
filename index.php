@@ -1,4 +1,5 @@
-<?php include 'includes/verifier-inc.php'; ?>
+<?php include 'includes/verifier-inc.php'; 
+$avatar = $_SESSION['avatar'];?>
 <!DOCTYPE html>
 <html>
    <head>

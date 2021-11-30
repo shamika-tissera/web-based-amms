@@ -33,7 +33,7 @@ echo "<script>var occu = \"$occu\";</script>";
                      <div class="col-lg-4">
                         <div class="card mb-3">
                            <div class="card-body text-center shadow">
-                              <img class="rounded-circle mb-3 mt-4" src="../assets/img/avatars/draco.jpg" width="160" height="160">
+                              <img class="rounded-circle mb-3 mt-4" <?php echo "src=\"$avatar\"";?> width="160" height="160">
                               <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
                            </div>
                         </div>
