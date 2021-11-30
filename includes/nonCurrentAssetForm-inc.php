@@ -24,24 +24,25 @@ if(isset($_POST["submit"])){
     $asset_type = $_POST["asset_type"];
 
     if(empty($code) || empty($manu) || empty($supplier) || empty($state) ||
-        empty($price) || empty($depreBegin) || empty($lifetime) || empty($depreRate)
+        empty($price) || empty($depreBegin) || $lifetime == "" || $depreRate == ""
         || empty($depreMethod) || empty($plant) || empty($condition) || empty($criticality)
-        || empty($serviceInterval)){
+        || $serviceInterval == ""){
             header("location: ../addNonCurrentAsset?error=empty");
             exit();  
     }
     else{
         if((is_float($price) || is_int($price) || is_float($lifetime) || is_int($lifetime) || is_float($serviceInterval) || is_int($serviceInterval))){
-            header("location: ../nonCurrentAssetForm.php?error=invalid_input");
+            header("location: ../addNonCurrentAsset.php?error=invalid_input");
             exit(); 
         }
         else{
-            if(empty($warrantyCode) || empty($warrantyStart) || empty($warrantyType)){
+            if($warrantyCode == "" || empty($warrantyStart) || empty($warrantyType)){
                 //Non-warranty item
                 $sql = "INSERT INTO noncurrentasset(asset_id, lifetime, depreciationRate, currentCondition, manufacturer, plant, serialNumber, depreciationMethod, costOfPurchase, serviceInterval, state, assetType, purchaseDate)" . 
                     "VALUES('$code', $lifetime, $depreRate, '$condition', '$manu', '$plant', '$serial', '$depreMethod', $price, $serviceInterval, '$state', '$asset_type', '$installationDate');";
                 
-                $run_out = mysqli_query($conn, $sql);
+                    echo "<script> alert(\"$sql\")</script>";
+                    $run_out = mysqli_query($conn, $sql);
                 echo "<script> alert(\"$sql\")</script>";
                 if ($run_out) {
                     //update service due date
@@ -81,7 +82,7 @@ if(isset($_POST["submit"])){
 
                         if($run_out){
                             echo "<script> alert('Asset Added Successfully!')</script>";
-                            echo "<script> window.open('nonCurrentAssetForm.php','_self')</script>";
+                            echo "<script> window.open('addNonCurrentAsset.php','_self')</script>";
                         }
                         else{
                             echo "<script> alert('Asset not recorded!')</script>";

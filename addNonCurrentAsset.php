@@ -32,16 +32,28 @@
                      <div class="card-body">
                      <form id="assetForm">
         <div class="row">
+
+        
+
             <div class="col-6">
                 <div class="form-group">
-                    <label for="asset_type">Asset Type<span class="text-danger">*</span></label><br>
-                    <select class="browser-default custom-select" id="asset_type" name="asset_type">
-                        <option>Select item</option>
-                        <option>One</option>
-                        <option>Two</option>
-                        <option>Three</option>
-                    </select>
-                    <p style="color:red; display: none;" id="assetTypeErr">*Please complete this field!</p>
+                    <label for="asset_type" class="col-form-label">Asset Type:</label>
+                    <select class="form-select" id="asset_type" name="asset_type"></select>
+                    <?php
+                        $sql_select = "SELECT type FROM assetType;";
+                        $run_query = mysqli_query($conn, $sql_select);
+                        echo "<script>var assetTypes = [";
+                            while($row = mysqli_fetch_array($run_query)){
+                            $ins = $row['type'];
+                            echo "\"$ins\", ";
+                            }
+                        echo "];</script>";
+                    ?>
+                    <script>
+                        assetTypes.forEach(element => {
+                            $("#asset_type").append(`<option class="clearExit" value="${element}">${element}</option>`);
+                        });
+                    </script>
                 </div>
             </div>
             <div class="col-6">
@@ -52,17 +64,11 @@
                 </div>
             </div>
         </div>   
-        
         <div class="row">
             <div class="col-6">
                 <div class="form-group">
                     <label for="manufacturer">Manufacturer<span class="text-danger">*</span></label><br>
-                    <select class="browser-default custom-select" id="manufacturer" name="manufacturer">
-                        <option selected="">Select item</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                    <input type="text" class="form-control" id="manufacturer" placeholder="Manuafacturer" name="manufacturer">
                     <p style="color:red; display: none;" id="manufacturerErr">*Please complete this field!</p>
                 </div>
             </div>
@@ -78,12 +84,7 @@
             <div class="col-6">
                 <div class="form-group">
                     <label for="supplier">Supplier<span class="text-danger">*</span></label><br>
-                    <select class="browser-default custom-select" id="supplier" name="supplier">
-                        <option selected="">Select item</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                    <input type="text" class="form-control" id="supplier" placeholder="Supplier" name="supplier">
                     <p style="color:red; display: none;" id="supplierErr">*Please complete this field!</p>
                 </div>
             </div>
@@ -178,6 +179,21 @@
                             <option value="Lifetime">Lifetime</option>
                         </select>
                     </div>
+                    <script>
+                $("#warrantyType").change(function(){
+                    let selectedItem = $("#warrantyType").val();
+                    //disables all warranty related input fields
+                    if(selectedItem === "Lifetime"){
+                        $('#warrantyCode').val('');
+                        $("#warrantyCode").attr("readonly", "true");
+                        $("#warrantyStart").attr("readonly", "true");
+                        $("#warrantyEnd").attr("readonly", "true");
+                        $('#warrantyStart').val('');
+                        $('#warrantyEnd').val('');
+                        $("#warrantyCode").attr("placeholder", "");
+                    }
+                });
+            </script>
                 </div>
             </div>
             <div class="row">
@@ -207,7 +223,7 @@
                             <input type="date" class="form-control" id="installationDate" name="installationDate">
                         </div>
                         <p style="color:red; display: none;" id="installationDateErr">*Please complete this field!</p>
-                    </div>
+                    </div>  
                 </div>
                 <div class="col-6">
                     <div class="form-group">
