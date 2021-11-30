@@ -11,6 +11,28 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script type="text/javascript">
+         //Reloads the page after a set time interval in case the user is idle
+         var idleTime = 0;
+         $(document).ready(function () {
+            var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+            // Zero the idle timer on mouse movement.
+            $(this).mousemove(function (e) {
+                  idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+                  idleTime = 0;
+            });
+         });
+
+         function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime > 5) { // after 5 minutes
+                  window.location.reload();
+            }
+         }
+      </script>
    </head>
    <body id="page-top">
       <div id="wrapper">
