@@ -32,7 +32,6 @@
                 <a class="nav-link" data-toggle="collapse" href="#inventory" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="fas fa-warehouse"></i><span> Inventory Management</span></a>
                 <div class="collapse" id="inventory">
                     <ul class="navbar-nav text-light" id="nonCurrentAssets">
-                        <li class="nav-item"><a class="nav-link" href="#"><i class="far fa-chart-bar"></i> Analytics</a></li>
                         <li class="nav-item"><a class="nav-link" href="manageInventory.php"><i class="fas fa-tasks"></i> Manage</a></li>
                         <li class="nav-item"><a class="nav-link" href="inventoryOrders.php"><i class="fas fa-history"></i> Orders</a></li>                
                     </ul>

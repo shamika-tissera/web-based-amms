@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Disposal</title>
+      <title>Maintenance Backlog</title>
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -48,7 +48,7 @@
             <div class="container-fluid">
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Disposed Assets</p>
+                        <p class="text-primary m-0 fw-bold">Backlog</p>
                     </div>
                     <div class="card-body" style="margin-left: auto; margin-right: auto;">
                     <canvas style=" height: 300px;" id="myChart" style="width:100%;max-width:1000px"></canvas>
@@ -75,7 +75,7 @@
                                 legend: {display: false},
                                 title: {
                                 display: true,
-                                text: "Utilization by Asset Code"
+                                text: "Days Passed by Asset Code"
                                 }
                             }
                             });
@@ -85,27 +85,14 @@
             </div>
             <br>
                <div class="container-fluid">
-                  <h3 class="text-dark mb-4">Disposal</h3>
+                  <h3 class="text-dark mb-4">Backlog</h3>
                   <div class="card shadow">
                      <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Disposed Assets</p>
+                        <p class="text-primary m-0 fw-bold">Backlog Information</p>
                      </div>
                      <div class="card-body">
                         <div class="row">
-                           <div class="col-md-6 text-nowrap">
-                              <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                                 <label class="form-label">
-                                    Show&nbsp;
-                                    <select class="d-inline-block form-select form-select-sm">
-                                       <option value="10" selected="">10</option>
-                                       <option value="25">25</option>
-                                       <option value="50">50</option>
-                                       <option value="100">100</option>
-                                    </select>
-                                    &nbsp;
-                                 </label>
-                              </div>
-                           </div>
+                           <div class="col-md-6 text-nowrap"></div>
                            <div class="col-md-6">
                               <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" id="searchInput" aria-controls="dataTable" placeholder="Search"></label></div>
                            </div>
@@ -136,22 +123,7 @@
                               </tfoot>
                            </table>
                         </div>
-                        <div class="row">
-                           <div class="col-md-6 align-self-center">
-                              <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                           </div>
-                           <div class="col-md-6">
-                              <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                 <ul class="pagination">
-                                    <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                                 </ul>
-                              </nav>
-                           </div>
-                        </div>
+                        
                      </div>
                   </div>
                </div>
@@ -173,7 +145,7 @@
         for (let i = 0; i < records.length; i++) {
             value = value.toLowerCase();
             var assetId = records[i].asset_id.toLowerCase();
-            var assetType = records[i].assetType.toLowerCase();
+            var assetType = records[i].asset_type.toLowerCase();
             var manu = records[i].manufacturer.toLowerCase();
 
             if(assetId.includes(value) || assetType.includes(value) || manu.includes(value)){
@@ -190,7 +162,7 @@
         for (let i = 0; i < records.length; i++) {
             var row = `<tr>
                         <td> ${records[i].asset_id} </td>
-                        <td> ${records[i].assetType} </td>
+                        <td> ${records[i].asset_type} </td>
                         <td> ${records[i].manufacturer} </td>
                         <td> ${records[i].serviceDue} </td>
                         <td> ${records[i].delay} </td>                        

@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Inventory</title>
+      <title>Inventory</title>   
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -196,7 +196,7 @@
 
                   <!-- Order Inventory form start -->
                   <div class="modal-body">
-                     <form action="includes/orderInventory-inc.php" method="POST">
+                     <form id="disposalSubmit">
                         <div class="form-group">
                            <label for="inventoryCode" class="col-form-label">Inventory Code:</label>
                            <input type="text" class="form-control" id="inventoryCode" value="" name="inventoryCode" readonly="readonly">
@@ -211,7 +211,9 @@
                         </div>
                         <div class="form-group">
                            <label for="plant" class="col-form-label">Plant:</label>
-                           <input type="text" class="form-control" id="plant" name="plant">
+                           <select class="form-select" id="plant" name="plant">
+                              <option value="Minuwangoda">Minuwangoda</option>
+                           </select>
                         </div>
                         <div class="form-group">
                            <label for="inCharge" class="col-form-label">In charge:</label>
@@ -220,7 +222,7 @@
                         <div class="form-group">
                            <label for="supplier" class="col-form-label">Supplier:</label>
                            <div>
-                           <select class="browser-default custom-select" id="supplier" name="supplier">
+                           <select class="form-select" id="supplier" name="supplier">
                            <option selected="">Select supplier...</option>
                            <?php
                                 include 'includes/dbh-inc.php';
@@ -234,6 +236,22 @@
                            ?>
                             </select>
                            </div>
+                           <script>
+                              $("#disposalSubmit").submit(function(event){
+                                 let due = $("#due").val();
+                                 let quantity = $("#quantity").val();
+                                 let inCharge = $("#inCharge").val();
+                                 let supplier = $("#supplier").val();
+                                 if (due === "" || quantity === "" || inCharge === "" || supplier === "") {
+                                    event.preventDefault();
+                                    alert("Please complete all fields!");
+                                 }
+                                 else{
+                                    $("#disposalSubmit").attr("method", "POST");
+                                    $("#disposalSubmit").attr("action", "includes/orderInventory-inc.php");
+                                 }
+                              });
+                           </script>
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

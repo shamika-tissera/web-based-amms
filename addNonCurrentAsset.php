@@ -177,6 +177,7 @@
                             <option selected="Limited">Limited</option>
                             <option value="On-Site">On-Site</option>
                             <option value="Lifetime">Lifetime</option>
+                            <option value="None">None</option>
                         </select>
                     </div>
                     <script>
@@ -184,13 +185,24 @@
                     let selectedItem = $("#warrantyType").val();
                     //disables all warranty related input fields
                     if(selectedItem === "Lifetime"){
-                        $('#warrantyCode').val('');
-                        $("#warrantyCode").attr("readonly", "true");
-                        $("#warrantyStart").attr("readonly", "true");
-                        $("#warrantyEnd").attr("readonly", "true");
+                        $("#warrantyStart").attr("readonly", true);
+                        $("#warrantyEnd").attr("readonly", true);
+                        $("#warrantyCode").attr("readonly", false);
                         $('#warrantyStart').val('');
                         $('#warrantyEnd').val('');
-                        $("#warrantyCode").attr("placeholder", "");
+                    }
+                    else if(selectedItem === "None"){
+                        $('#warrantyCode').val('');
+                        $("#warrantyCode").attr("readonly", true);
+                        $("#warrantyStart").attr("readonly", true);
+                        $("#warrantyEnd").attr("readonly", true);
+                        $('#warrantyStart').val('');
+                        $('#warrantyEnd').val('');
+                        //$("#warrantyCode").attr("placeholder", "");
+                    }else{
+                        $("#warrantyCode").attr("readonly", false);
+                        $("#warrantyStart").attr("readonly", false);
+                        $("#warrantyEnd").attr("readonly", false);
                     }
                 });
             </script>

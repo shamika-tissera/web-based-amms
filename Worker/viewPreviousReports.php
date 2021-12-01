@@ -51,18 +51,7 @@
                      <div class="card-body">
                         <div class="row">
                            <div class="col-md-6 text-nowrap">
-                              <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
-                                 <label class="form-label">
-                                    Show&nbsp;
-                                    <select class="d-inline-block form-select form-select-sm">
-                                       <option value="10" selected="">10</option>
-                                       <option value="25">25</option>
-                                       <option value="50">50</option>
-                                       <option value="100">100</option>
-                                    </select>
-                                    &nbsp;
-                                 </label>
-                              </div>
+
                            </div>
                            <div class="col-md-6">
                               <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" id="searchInput" aria-controls="dataTable" placeholder="Search"></label></div>
@@ -94,22 +83,7 @@
                               </tfoot>
                            </table>
                         </div>
-                        <div class="row">
-                           <div class="col-md-6 align-self-center">
-                              <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                           </div>
-                           <div class="col-md-6">
-                              <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                 <ul class="pagination">
-                                    <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                                 </ul>
-                              </nav>
-                           </div>
-                        </div>
+                        
                      </div>
                   </div>
                </div>
@@ -162,7 +136,17 @@
                         <td> Approved </td>
                         <td> Not Performed </td>
                         </tr>`;
-            }    
+            }
+            else if(records[i].performed === '1'){
+                var row = `<tr>
+                        <td> ${records[i].asset_id} </td>
+                        <td> ${records[i].asset_type} </td>
+                        <td> ${records[i].reported_date} </td>
+                        <td> ${records[i].message} </td>
+                        <td> Not approved </td>
+                        <td> Performed </td>
+                        </tr>`;
+            }      
             else{
                 var row = `<tr>
                         <td> ${records[i].asset_id} </td>
