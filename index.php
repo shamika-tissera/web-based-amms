@@ -1,4 +1,4 @@
-<?php include 'includes/verifier-inc.php'; 
+<?php require 'includes/verifier-inc.php'; 
 $avatar = $_SESSION['avatar'];?>
 <!DOCTYPE html>
 <html>
@@ -15,13 +15,13 @@ $avatar = $_SESSION['avatar'];?>
    <body id="page-top">
       <div id="wrapper">
 
-      <?php include 'sideNav.php' ?>
+      <?php require 'sideNav.php' ?>
 
          <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
 
-            <?php include 'headerNav.php' ?>
-            <?php include 'includes/dbh-inc.php' ?>
+            <?php require 'headerNav.php' ?>
+            <?php require 'includes/dbh-inc.php' ?>
 
                <div class="container-fluid">
                   <div class="d-sm-flex justify-content-between align-items-center mb-4">

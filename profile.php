@@ -1,5 +1,5 @@
-<?php 
-include 'includes/verifier-inc.php'; 
+<?php
+require 'includes/verifier-inc.php'; 
 $username = $_SESSION['username'];
 $first_name = $_SESSION['firstname'];
 $last_name = $_SESSION['lastname'];
@@ -10,7 +10,7 @@ echo "<script>var occu = \"$occu\";</script>";
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Profile - Brand</title>
+      <title>Profile</title>
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -20,12 +20,12 @@ echo "<script>var occu = \"$occu\";</script>";
    <body id="page-top">
       <div id="wrapper">
          
-      <?php include 'sideNav.php' ?>
+      <?php require 'sideNav.php' ?>
 
          <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                
-            <?php include 'headerNav.php' ?>
+            <?php require 'headerNav.php' ?>
 
                <div class="container-fluid">
                   <h3 class="text-dark mb-4">Profile</h3>
@@ -35,28 +35,11 @@ echo "<script>var occu = \"$occu\";</script>";
                         <div class="card mb-3">
                            <div class="card-body text-center shadow">
                               <img class="rounded-circle mb-3 mt-4" <?php echo "src=\"$avatar\"";?> width="160" height="160">
-                              <div class="mb-3"><label class="btn btn-default">Browse<input id="photo" type="file" hidden></label><button class="btn btn-primary btn-sm" type="file">Change</button></div>
+                              <div class="mb-3"><label class="btn btn-default"><input id="photo" type="file" name="image"></label><button class="btn btn-primary btn-sm" type="submit" name="submit">Change</button></div>
                            </div>
-                           <script>
-                              $("#changePic").submit(function(event){
-                                 let isValid = true;
-                                 let image = $("#photo");
-                                 const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-                                 isValid = image.files && $.inArray(image['type'], acceptedImageTypes);
-                                 if(isValid){
-                                    $("#changePic").attr("method", "POST");
-                                    $("#changePic").attr("enctype", "multipart/form-data");
-                                    $("#changePic").attr("action", "includes/uploadImage.php");
-                                 }
-                                 else{
-                                    $("#changePic").preventDefault();
-                                    alert("Please select a valid image!");
-                                 }
-                              });
-                           </script>
                         </div>
-                        </form>
-                        
+                        <input type="hidden" value=<?php echo "\"$username\""?> name="username">
+                        </form>                        
                      </div>
                      <div class="col-lg-8">
                         <div class="row">
@@ -123,7 +106,24 @@ echo "<script>var occu = \"$occu\";</script>";
                   </div> 
                </div>
             </div>
+            
             <script>
+               $("#changePic").submit(function(event){
+                  debugger;
+                  let isValid = true;
+                  let image = $("#photo");
+                  const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+                  //isValid = image.files && $.inArray(image['type'], acceptedImageTypes);
+                  if(isValid){
+                     $("#changePic").attr("method", "POST");
+                     $("#changePic").attr("enctype", "multipart/form-data");
+                     $("#changePic").attr("action", "includes/uploadImage.php");
+                  }
+                  else{
+                     $("#changePic").preventDefault();
+                     alert("Please select a valid image!");
+                  }
+               });
                const occuList = ["Worker", "Manager", "Accountant"];
                occuList.forEach(element => {
                   if(occu.toLowerCase() === element.toLowerCase()){
@@ -184,7 +184,7 @@ echo "<script>var occu = \"$occu\";</script>";
                   $("#last_nameError").css("display", "none");
                });
             </script>
-            <?php include 'footer.php' ?>
+            <?php require 'footer.php' ?>
 
          </div>
          <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
