@@ -4,6 +4,7 @@ $username = $_SESSION['username'];
 $first_name = $_SESSION['firstname'];
 $last_name = $_SESSION['lastname'];
 $occu = $_SESSION['category'];
+$avatar = $_SESSION['avatar'];
 echo "<script>var occu = \"$occu\";</script>";
 ?>
 <html>
@@ -30,14 +31,16 @@ echo "<script>var occu = \"$occu\";</script>";
                <div class="container-fluid">
                   <h3 class="text-dark mb-4">Profile</h3>
                   <div class="row mb-3">
-                     <div class="col-lg-4">
+                  <div class="col-lg-4">
+                        <form id="changePic">
                         <div class="card mb-3">
                            <div class="card-body text-center shadow">
                               <img class="rounded-circle mb-3 mt-4" <?php echo "src=\"$avatar\"";?> width="160" height="160">
-                              <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
+                              <div class="mb-3"><label class="btn btn-default"><input id="photo" type="file" name="image"></label><button class="btn btn-primary btn-sm" type="submit" name="submit">Change</button></div>
                            </div>
                         </div>
-                        
+                        <input type="hidden" value=<?php echo "\"$username\""?> name="username">
+                        </form>                        
                      </div>
                      <div class="col-lg-8">
                         <div class="row">
@@ -105,6 +108,22 @@ echo "<script>var occu = \"$occu\";</script>";
                </div>
             </div>
             <script>
+               $("#changePic").submit(function(event){
+                  debugger;
+                  let isValid = true;
+                  let image = $("#photo");
+                  const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+                  //isValid = image.files && $.inArray(image['type'], acceptedImageTypes);
+                  if(isValid){
+                     $("#changePic").attr("method", "POST");
+                     $("#changePic").attr("enctype", "multipart/form-data");
+                     $("#changePic").attr("action", "../includes/uploadImage_worker.php");
+                  }
+                  else{
+                     $("#changePic").preventDefault();
+                     alert("Please select a valid image!");
+                  }
+               });
                const occuList = ["Worker", "Manager", "Accountant"];
                occuList.forEach(element => {
                   if(occu.toLowerCase() === element.toLowerCase()){
