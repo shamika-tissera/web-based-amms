@@ -3,15 +3,17 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-      <title>Login - Brand</title>
+      <title>Login</title>
       <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    </head>
-   <body class="bg-gradient-primary">
+   <body class="bg-secondary bg-gradient">
       <div class="container">
+         <br><br><br><br><br>
          <div class="row justify-content-center">
             <div class="col-md-9 col-lg-12 col-xl-10">
                <div class="card shadow-lg o-hidden border-0 my-5">
@@ -25,15 +27,14 @@
                               <div class="text-center">
                                  <h4 class="text-dark mb-4">Welcome Back!</h4>
                               </div>
-                              <form class="user" action="includes/login-inc.php" method="POST">
+                              <form id="loginForm" class="user">
                                  <div class="mb-3"><input class="form-control form-control-user" type="text" id="uname" aria-describedby="emailHelp" placeholder="Enter Username..." name="uname"></div>
-                                 <div class="mb-3"><input class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Enter Password..." name="pwd"></div>
+                                 <div class="mb-3"><input class="form-control form-control-user" type="password" id="pass" placeholder="Enter Password..." name="pwd"></div>
                                  <div class="mb-3">
-                                    <div class="custom-control custom-checkbox small">
-                                       <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Remember Me</label></div>
-                                    </div>
+                                    
                                  </div>
                                  <button class="btn btn-primary d-block btn-user w-100" type="submit" name="submit">Login</button>
+                                 <br/><p style="color:red; display:none" id="errorMsg">*Please fill all fields.</p><p style="color:red; display:none" id="regexError">*Please enter valid credentials!</p>
                                  <?php
                                     if(isset($_GET["error"])){   
                                           if($_GET["error"] == "wrong_login" || $_GET["error"] == "invalid_login"){
@@ -56,8 +57,38 @@
                                  ?>
                                  <hr>
                               </form>
-                              <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
-                              <div class="text-center"><a class="small" href="register.html">Create an Account!</a></div>
+                              <script>
+                                 $("#loginForm").submit(function(event){
+                                    let uname = $("#uname");
+                                    let pass = $("#pass");
+                                    const pattern = "/[^A-Za-z0-9]+/";
+                                    const regex = new RegExp(pattern);
+                                    if(uname.val() === "" || pass.val() === ""){
+                                       $("#errorMsg").css("display", "block");
+                                       event.preventDefault();
+                                    }
+                                    else if(regex.test(uname.val()) || regex.test(pass.val())){
+                                       $("#regexError").css("display", "block");
+                                       event.preventDefault();
+                                    }
+                                    else{
+                                       $("#loginForm").attr("method", "POST");
+                                       $("#loginForm").attr("action", "includes/login-inc.php");
+                                    }
+                                 });
+                                 $("#uname").keyup(function(event){
+                                    $("#errorMsg").css("display", "none");
+                                 });
+                                 $("#pass").keyup(function(event){
+                                    $("#errorMsg").css("display", "none");
+                                 });
+                                 $("#pass").keyup(function(event){
+                                    $("#regexError").css("display", "none");
+                                 });
+                                 $("#uname").keyup(function(event){
+                                    $("#regexError").css("display", "none");
+                                 });
+                              </script>
                            </div>
                         </div>
                      </div>

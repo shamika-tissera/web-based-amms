@@ -23,11 +23,11 @@ document.getElementById("assetForm").addEventListener("submit", function(event){
         isValid = false;
         document.getElementById("assetCodeErr").style.display = "block";
     }
-    if(manufacturer === "Select item"){
+    if(manufacturer === ""){
         isValid = false;
         document.getElementById("manufacturerErr").style.display = "block";
     }
-    if(supplier === "Select item"){
+    if(supplier === ""){
         isValid = false;
         document.getElementById("supplierErr").style.display = "block";
     }
@@ -70,10 +70,10 @@ document.getElementById("asset_type").addEventListener("change", function(event)
 document.getElementById("assetCode").addEventListener("keyup", function(event){
     document.getElementById("assetCodeErr").style.display = "none";
 });
-document.getElementById("manufacturer").addEventListener("change", function(event){
+document.getElementById("manufacturer").addEventListener("keyup", function(event){
     document.getElementById("manufacturerErr").style.display = "none";
 });
-document.getElementById("supplier").addEventListener("change", function(event){
+document.getElementById("supplier").addEventListener("keyup", function(event){
     document.getElementById("supplierErr").style.display = "none";
 });
 document.getElementById("price").addEventListener("keyup", function(event){

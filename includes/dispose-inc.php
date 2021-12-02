@@ -11,7 +11,7 @@ if(isset($_POST["submit"])){
     }
     
     //Remove record from non current asset
-    $remove_asset_record = "DELETE FROM `noncurrentasset` WHERE asset_id = '$assetCode';";
+    $remove_asset_record = "UPDATE noncurrentasset SET disposed = 1 WHERE asset_id = '$assetCode';";
 
     echo "<script>alert(\"$remove_asset_record\")</script>";
 

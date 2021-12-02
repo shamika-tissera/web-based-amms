@@ -35,7 +35,7 @@ echo "<script>var occu = \"$occu\";</script>";
                         <div class="card mb-3">
                            <div class="card-body text-center shadow">
                               <img class="rounded-circle mb-3 mt-4" <?php echo "src=\"$avatar\"";?> width="160" height="160">
-                              <div class="mb-3"><label class="btn btn-default"><input id="photo" type="file" name="image"></label><button class="btn btn-primary btn-sm" type="submit" name="submit">Change</button></div>
+                              <div class="mb-3"><label class="btn btn-default"><input accept="image/x-png,image/gif,image/jpeg" id="photo" type="file" name="image"></label><button class="btn btn-primary btn-sm" type="submit" name="submit">Change</button></div>
                            </div>
                         </div>
                         <input type="hidden" value=<?php echo "\"$username\""?> name="username">
@@ -112,7 +112,16 @@ echo "<script>var occu = \"$occu\";</script>";
                   debugger;
                   let isValid = true;
                   let image = $("#photo");
-                  const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+                  let ext = image.val().split('.').pop();
+                  const acceptedImageTypes = ['gif', 'jpeg', 'png', 'jpg'];
+                  if(image.val() === ""){
+                     alert("Please select an image!");
+                     isValid = false;
+                  }
+                  if(!acceptedImageTypes.includes(ext)){
+                     isValid = false;
+                     alert("Please select a valid image!")
+                  }
                   //isValid = image.files && $.inArray(image['type'], acceptedImageTypes);
                   if(isValid){
                      $("#changePic").attr("method", "POST");
@@ -120,8 +129,7 @@ echo "<script>var occu = \"$occu\";</script>";
                      $("#changePic").attr("action", "includes/uploadImage.php");
                   }
                   else{
-                     $("#changePic").preventDefault();
-                     alert("Please select a valid image!");
+                     event.preventDefault();
                   }
                });
                const occuList = ["Worker", "Manager", "Accountant"];
